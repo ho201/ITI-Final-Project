@@ -1,155 +1,104 @@
-const Medicine = require("../models/Medicine");
+const medicineService = require("../services/medicineService");
+const responseHandler = require("../utils/responseHandler");
 
-const createMedicine = async (req, res) => {
+const createMedicine = async (req, res, next) => {
     try {
-        const medicine = await Medicine.create({
+        const medicine = await medicineService.createMedicine({
             ...req.body,
-            userId: req.user.id
+            userId: req.user._id
         });
 
-        res.status(201).json({
-            success: true,
-            message: "Medicine created successfully",
-            data: medicine
-        });
+        return responseHandler(
+            res,
+            201,
+            "Medicine created successfully",
+            { medicine }
+        );
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
+        next(error);
     }
 };
 
 const getMedicines = async (req, res, next) => {
     try {
-        const { page = 1, limit = 10, search, type, status } = req.query;
+        const medicines = await medicineService.getMedicines(req.user._id);
 
-        // base query to filter medicines by userId
-        let dbQuery = { userId: req.user.id };
-
-        //search for name or activeingredient
-        if (search) {
-            dbQuery.$or = [
-                { name: { $regex: search, $options: "i" } },
-                { activeIngredient: { $regex: search, $options: "i" } }
-            ];
-        }
-
-        // adding type and status filters if provided
-        if (type) dbQuery.type = type;
-        if (status) dbQuery.status = status;
-
-        // Pagination Math
-        const parsedLimit = parseInt(limit);
-        const skipAmount = (parseInt(page) - 1) * parsedLimit;
-
-        // optimized query with lean() for better performance
-        const medicines = await Medicine.find(dbQuery)
-            .skip(skipAmount)
-            .limit(parsedLimit)
-            .lean(); 
-
-        const totalDocuments = await Medicine.countDocuments(dbQuery);
-
-        res.status(200).json({
-            success: true,
-            count: medicines.length,
-            total: totalDocuments,
-            totalPages: Math.ceil(totalDocuments / parsedLimit),
-            currentPage: parseInt(page),
-            data: medicines
-        });
+        return responseHandler(
+            res,
+            200,
+            "Medicines retrieved successfully",
+            { medicines }
+        );
     } catch (error) {
-        next(error); 
+        next(error);
     }
 };
 
-const getMedicineById = async (req, res) => {
+const getMedicineById = async (req, res, next) => {
     try {
-        const medicine = await Medicine.findOne({
-            _id: req.params.id,
-            userId: req.user.id
-        });
-
-        if (!medicine) {
-            return res.status(404).json({
-                success: false,
-                message: "Medicine not found"
-            });
-        }
-
-        res.status(200).json({
-            success: true,
-            data: medicine
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-};
-
-const updateMedicine = async (req, res) => {
-    try {
-        const medicine = await Medicine.findOneAndUpdate(
-            {
-                _id: req.params.id,
-                userId: req.user.id
-            },
-            req.body,
-            {
-                new: true,
-                runValidators: true
-            }
+        const medicine = await medicineService.getMedicineById(
+            req.params.id,
+            req.user._id
         );
 
         if (!medicine) {
-            return res.status(404).json({
-                success: false,
-                message: "Medicine not found"
-            });
+            return responseHandler(res, 404, "Medicine not found");
         }
 
-        res.status(200).json({
-            success: true,
-            message: "Medicine updated successfully",
-            data: medicine
-        });
+        return responseHandler(
+            res,
+            200,
+            "Medicine retrieved successfully",
+            { medicine }
+        );
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
+        next(error);
     }
 };
 
-const deleteMedicine = async (req, res) => {
+const updateMedicine = async (req, res, next) => {
     try {
-        const medicine = await Medicine.findOneAndDelete({
-            _id: req.params.id,
-            userId: req.user.id
-        });
+        const medicine = await medicineService.updateMedicine(
+            req.params.id,
+            req.user._id,
+            req.body
+        );
 
         if (!medicine) {
-            return res.status(404).json({
-                success: false,
-                message: "Medicine not found"
-            });
+            return responseHandler(res, 404, "Medicine not found");
         }
 
-        res.status(200).json({
-            success: true,
-            message: "Medicine deleted successfully"
-        });
+        return responseHandler(
+            res,
+            200,
+            "Medicine updated successfully",
+            { medicine }
+        );
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
+        next(error);
     }
 };
 
+const deleteMedicine = async (req, res, next) => {
+    try {
+        const medicine = await medicineService.deleteMedicine(
+            req.params.id,
+            req.user._id
+        );
+
+        if (!medicine) {
+            return responseHandler(res, 404, "Medicine not found");
+        }
+
+        return responseHandler(
+            res,
+            200,
+            "Medicine deleted successfully"
+        );
+    } catch (error) {
+        next(error);
+    }
+};
 
 module.exports = {
     createMedicine,
