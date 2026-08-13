@@ -5,8 +5,8 @@ const notFoundMiddleware = require("./middlewares/notFoundMiddleware");
 const errorHandler = require("./middlewares/errorHandle");
 
 const authRoutes = require("./routs/authRoutes");
-const reminderRoutes = require('./routes/reminderRoutes'); 
-const historyRoutes = require("./routes/historyRoutes");
+const reminderRoutes = require("./routs/reminderRoutes");
+const historyRoutes = require("./routs/historyRoutes");
 
 const app = express();
 
@@ -16,12 +16,12 @@ app.use(logger);
 
 app.use("/api/auth", authRoutes);
 
-app.use('/api/reminders', reminderRoutes);
+app.use("/api/reminders", reminderRoutes);
+
+app.use("/api/history", historyRoutes);
 
 app.use(notFoundMiddleware);
 
 app.use(errorHandler);
-
-app.use("/api/history", historyRoutes);
 
 module.exports = app;

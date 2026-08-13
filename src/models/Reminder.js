@@ -40,5 +40,5 @@ const reminderSchema = new mongoose.Schema({
 }
 );
 
-const Reminder = mongoose.model("Reminder",userSchema);
+const Reminder = mongoose.model("Reminder", reminderSchema);
 module.exports = Reminder;
