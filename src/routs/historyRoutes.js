@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const { protect } = require("../middlewares/authMiddleware");
-
+const handleValidationErrors = require("../middlewares/validationMiddleware");
 const {
   createHistory,
   getHistory,
@@ -14,10 +14,11 @@ const {
   updateHistoryValidation,
 } = require("../validations/history.validation");
 router.post(
-  "/",
-  protect,
-  createHistoryValidation,
-  createHistory
+    "/",
+    protect,
+    createHistoryValidation,
+    handleValidationErrors,
+    createHistory
 );
 
 router.get(
@@ -27,10 +28,11 @@ router.get(
 );
 
 router.patch(
-  "/:id",
-  protect,
-  updateHistoryValidation,
-  updateHistory
+    "/:id",
+    protect,
+    updateHistoryValidation,
+    handleValidationErrors,
+    updateHistory
 );
 
 module.exports = router;
