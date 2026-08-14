@@ -1,4 +1,5 @@
 const express = require("express");
+const upload = require("../middlewares/uploadMiddleware");
 
 const {
     createMedicine,
@@ -12,8 +13,6 @@ const { protect } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
-router.post("/", protect, createMedicine);
-
 router.put("/:id", protect, updateMedicine);
 
 router.get("/", protect, getMedicines);
@@ -22,4 +21,5 @@ router.get("/:id", protect, getMedicineById);
 
 router.delete("/:id", protect, deleteMedicine);
 
+router.post("/", protect, upload.single("image"), createMedicine);
 modules.exports = router;

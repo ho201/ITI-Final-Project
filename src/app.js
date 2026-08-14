@@ -7,6 +7,7 @@ const errorHandler = require("./middlewares/errorHandle");
 const authRoutes = require("./routs/authRoutes");
 const reminderRoutes = require("./routs/reminderRoutes");
 const historyRoutes = require("./routs/historyRoutes");
+const medicineRoutes = require("./routs/medicineRoutes");
 
 const app = express();
 

@@ -5,7 +5,8 @@ const createMedicine = async (req, res, next) => {
     try {
         const medicine = await medicineService.createMedicine({
             ...req.body,
-            userId: req.user._id
+            userId: req.user._id,
+            image: req.file ? req.file.path : null
         });
 
         return responseHandler(
