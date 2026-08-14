@@ -1,5 +1,6 @@
 const express = require("express");
 const upload = require("../middlewares/uploadMiddleware");
+const medicineValidation = required("../validations/medicineValidation.js");
 
 const {
     createMedicine,
@@ -21,5 +22,6 @@ router.get("/:id", protect, getMedicineById);
 
 router.delete("/:id", protect, deleteMedicine);
 
-router.post("/", protect, upload.single("image"), createMedicine);
+router.post("/", protect, medicineValidation, upload.single("image"), createMedicine);
+
 modules.exports = router;
