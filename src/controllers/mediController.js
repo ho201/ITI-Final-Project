@@ -21,13 +21,13 @@ const createMedicine = async (req, res, next) => {
 
 const getMedicines = async (req, res, next) => {
     try {
-        const medicines = await medicineService.getMedicines(req.user._id);
+        const result = await medicineService.getMedicines(req.user._id, req.query);
 
         return responseHandler(
             res,
             200,
             "Medicines retrieved successfully",
-            { medicines }
+            result
         );
     } catch (error) {
         next(error);
