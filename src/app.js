@@ -14,6 +14,8 @@ app.use(express.json());
 
 app.use(logger);
 
+app.use("/api/medicines", medicineRoutes);
+
 app.use("/api/auth", authRoutes);
 
 app.use("/api/reminders", reminderRoutes);
