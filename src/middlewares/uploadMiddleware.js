@@ -23,10 +23,10 @@ const fileFilter = (req, file, cb) => {
         "image/webp"
     ];
 
-    if(allowedTypes.include(file.mimetype)){
+    if(allowedTypes.includes(file.mimetype)){
         cb(null, true);
     }else {
-        cb(new erorr("Only image files are allowed"), false);
+        cb(new Erorr("Only image files are allowed"), false);
     }
 };
 
@@ -38,6 +38,6 @@ const upload = multer({
     }
 });
 
-module.exportts = upload;
+module.exports = upload;
 
 

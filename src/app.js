@@ -4,6 +4,9 @@ const logger = require("./middlewares/logger");
 const notFoundMiddleware = require("./middlewares/notFoundMiddleware");
 const errorHandler = require("./middlewares/errorHandle");
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./swagger/swagger");
+
 const authRoutes = require("./routs/authRoutes");
 const reminderRoutes = require("./routs/reminderRoutes");
 const historyRoutes = require("./routs/historyRoutes");
@@ -14,6 +17,8 @@ const app = express();
 app.use(express.json());
 
 app.use(logger);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use("/api/medicines", medicineRoutes);
 
