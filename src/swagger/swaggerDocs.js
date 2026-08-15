@@ -11,7 +11,6 @@
  *     description: Medicine dose history APIs
  */
 
-
 /**
  * @swagger
  * /auth/register:
@@ -47,7 +46,6 @@
  *         description: Validation error
  */
 
-
 /**
  * @swagger
  * /auth/login:
@@ -79,10 +77,9 @@
  *         description: Invalid email or password
  */
 
-
 /**
  * @swagger
- * /auth/me:
+ * /auth/profile:
  *   get:
  *     summary: Get current logged-in user
  *     tags: [Authentication]
@@ -95,6 +92,22 @@
  *         description: Unauthorized
  */
 
+/**
+ * @swagger
+ * /auth/users:
+ *   get:
+ *     summary: Get all users
+ *     tags: [Authentication]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Users retrieved successfully
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Admin access required
+ */
 
 /**
  * @swagger
@@ -151,7 +164,6 @@
  *         description: Unauthorized
  */
 
-
 /**
  * @swagger
  * /medicines:
@@ -166,7 +178,6 @@
  *       401:
  *         description: Unauthorized
  */
-
 
 /**
  * @swagger
@@ -186,12 +197,11 @@
  *     responses:
  *       200:
  *         description: Medicine retrieved successfully
- *       404:
- *         description: Medicine not found
  *       401:
  *         description: Unauthorized
+ *       404:
+ *         description: Medicine not found
  */
-
 
 /**
  * @swagger
@@ -228,12 +238,11 @@
  *     responses:
  *       200:
  *         description: Medicine updated successfully
- *       404:
- *         description: Medicine not found
  *       401:
  *         description: Unauthorized
+ *       404:
+ *         description: Medicine not found
  */
-
 
 /**
  * @swagger
@@ -253,12 +262,11 @@
  *     responses:
  *       200:
  *         description: Medicine deleted successfully
- *       404:
- *         description: Medicine not found
  *       401:
  *         description: Unauthorized
+ *       404:
+ *         description: Medicine not found
  */
-
 
 /**
  * @swagger
@@ -320,7 +328,6 @@
  *         description: Unauthorized
  */
 
-
 /**
  * @swagger
  * /reminders:
@@ -335,7 +342,6 @@
  *       401:
  *         description: Unauthorized
  */
-
 
 /**
  * @swagger
@@ -363,6 +369,7 @@
  *                 type: string
  *               time:
  *                 type: string
+ *                 example: "08:00"
  *               dosageQuantity:
  *                 type: string
  *               frequency:
@@ -380,12 +387,11 @@
  *     responses:
  *       200:
  *         description: Reminder updated successfully
- *       404:
- *         description: Reminder not found
  *       401:
  *         description: Unauthorized
+ *       404:
+ *         description: Reminder not found
  */
-
 
 /**
  * @swagger
@@ -401,15 +407,15 @@
  *         required: true
  *         schema:
  *           type: string
+ *         example: 665abc123456789012345678
  *     responses:
  *       200:
  *         description: Reminder deleted successfully
- *       404:
- *         description: Reminder not found
  *       401:
  *         description: Unauthorized
+ *       404:
+ *         description: Reminder not found
  */
-
 
 /**
  * @swagger
@@ -455,7 +461,6 @@
  *         description: Unauthorized
  */
 
-
 /**
  * @swagger
  * /history:
@@ -470,7 +475,6 @@
  *       401:
  *         description: Unauthorized
  */
-
 
 /**
  * @swagger
@@ -505,8 +509,9 @@
  *     responses:
  *       200:
  *         description: History updated successfully
- *       404:
- *         description: History not found
  *       401:
  *         description: Unauthorized
+ *       404:
+ *         description: History not found
  */
+

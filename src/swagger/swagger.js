@@ -8,12 +8,14 @@ const options = {
     info: {
       title: "MediCare Reminder API",
       version: "1.0.0",
-      description: "API documentation for MediCare Reminder project"
+      description:
+        "RESTful API for managing users, medicines, reminders, and medication history."
     },
 
     servers: [
       {
-        url: "http://localhost:3000/api"
+        url: "http://localhost:3000/api",
+        description: "Local development server"
       }
     ],
 
@@ -28,11 +30,10 @@ const options = {
     }
   },
 
-  apis: [
-    path.join(__dirname, "swaggerDocs.js")
-  ]
+  apis: [path.join(__dirname, "swaggerDocs.js")]
 };
 
 const swaggerSpec = swaggerJsdoc(options);
 
 module.exports = swaggerSpec;
+

@@ -14,10 +14,7 @@ const register = async (req, res, next) => {
 
     const user = await User.create({ name, email, password });
 
-    const token = generateToken({ id: user._id, role: user.role });
-
     return responseHandler(res, 201, "User registered successfully.", {
-      token,
       user: {
         id: user._id,
         name: user.name,
@@ -60,7 +57,7 @@ const login = async (req, res, next) => {
   }
 };
 
-const getMe = async (req, res, next) => {
+const profile = async (req, res, next) => {
   try {
     return responseHandler(res, 200, "User profile", {
       user: {
@@ -71,9 +68,23 @@ const getMe = async (req, res, next) => {
         createdAt: req.user.createdAt,
       },
     });
-  } catch (err) {
+  } 
+  catch (err) {
     next(err);
   }
+}
+const getAllUsers = async (req, res, next) => {
+  try {
+    const users = await User.find().select("-password");
+
+    return responseHandler(res, 200, "Users retrieved successfully.", {
+      users,
+    });
+  } 
+  catch (err) {
+    next(err);
+  }
+
 };
 
-module.exports = { register, login, getMe };
+module.exports = { register, login, profile, getAllUsers};
