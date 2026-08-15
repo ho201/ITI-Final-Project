@@ -1,6 +1,6 @@
 const express = require("express");
 const upload = require("../middlewares/uploadMiddleware");
-const medicineValidation = required("../validations/medicineValidation.js");
+const medicineValidation = require("../validations/medicineValidation.js");
 
 const {
     createMedicine,
@@ -24,4 +24,4 @@ router.delete("/:id", protect, deleteMedicine);
 
 router.post("/", protect, medicineValidation, upload.single("image"), createMedicine);
 
-modules.exports = router;
+module.exports = router;

@@ -28,7 +28,7 @@ const medicineValidation = [
 
     body("activeIngredient")
         .trim()
-        .nonEmpty()
+        .notEmpty()
         .withMessage("Active ingredient is required"),
 
         (req, res, next) => {
