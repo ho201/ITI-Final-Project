@@ -1,9 +1,10 @@
 const express = require("express");
 
-const logger = require("./middlewares/logger");
-const notFoundMiddleware = require("./middlewares/notFoundMiddleware");
-const errorHandler = require("./middlewares/errorHandle");
-
+const {
+    logger,
+    notFoundMiddleware,
+    errorHandler
+} = require("./middlewares");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./swagger/swagger");
 
@@ -16,7 +17,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use(logger);
+app.use(logger);//وده معناه إن الـ logger بيتطبق على كل الـ routes اللي بعده.
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

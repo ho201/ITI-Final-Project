@@ -12,7 +12,7 @@ const createReminder = async (req, res, next) => {
             userId,
             medicineId,
             time,
-            frequency
+            isActive: true
         });
 
         if (existingReminder) {
@@ -74,25 +74,56 @@ const updateReminder = async (req, res, next) => {
             throw err;
         }
 
-        if (reminder.userId.toString() !== userId) {
+        if (reminder.userId.toString() !== userId.toString()) {
             const err = new Error("Unauthorized to update this reminder");
             err.statusCode = 403;
             throw err;
         }
 
-        if (updateData.time) reminder.time = updateData.time;
-        if (updateData.frequency) reminder.frequency = updateData.frequency;
-        if (updateData.dosageQuantity)
+        const newMedicineId = updateData.medicineId || reminder.medicineId;
+        const newTime = updateData.time || reminder.time;
+
+        const existingReminder = await Reminder.findOne({
+            _id: { $ne: reminderId },
+            userId,
+            medicineId: newMedicineId,
+            time: newTime,
+            isActive: true
+        });
+
+        if (existingReminder) {
+            const err = new Error(
+                "A reminder for this medicine at this exact time already exists."
+            );
+            err.statusCode = 400;
+            throw err;
+        }
+
+        if (updateData.medicineId) {
+            reminder.medicineId = updateData.medicineId;
+        }
+
+        if (updateData.time) {
+            reminder.time = updateData.time;
+        }
+
+        if (updateData.frequency) {
+            reminder.frequency = updateData.frequency;
+        }
+
+        if (updateData.dosageQuantity) {
             reminder.dosageQuantity = updateData.dosageQuantity;
+        }
 
-        if (updateData.days)
-            reminder.days =
-                updateData.frequency === "Specific Days"
-                    ? updateData.days
-                    : [];
+        if (updateData.frequency === "Specific Days") {
+            reminder.days = updateData.days || [];
+        } else if (updateData.frequency) {
+            reminder.days = [];
+        }
 
-        if (typeof updateData.isActive === "boolean")
+        if (typeof updateData.isActive === "boolean") {
             reminder.isActive = updateData.isActive;
+        }
 
         await reminder.save();
 
@@ -120,7 +151,7 @@ const deleteReminder = async (req, res, next) => {
             throw err;
         }
 
-        if (reminder.userId.toString() !== userId) {
+        if (reminder.userId.toString() !== userId.toString()) {
             const err = new Error("Unauthorized to delete this reminder");
             err.statusCode = 403;
             throw err;
