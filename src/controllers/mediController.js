@@ -4,8 +4,8 @@ const responseHandler = require("../utils/responseHandler");
 const createMedicine = async (req, res, next) => {
     try {
         const medicine = await Medicine.create({
-            ...req.body,
-            userId: req.user._id,
+            ...req.body,//يعني خد البيانات اللي المستخدم بعتها.
+            userId: req.user._id,//بنربط الدواء بالمستخدم ده.
             image: req.file ? req.file.path : null
         });
 
@@ -22,8 +22,8 @@ const createMedicine = async (req, res, next) => {
 
 const getMedicines = async (req, res, next) => {
     try {
-        const { page = 1, limit = 10, search, type, status } = req.query;
-        let dbQuery = { userId: req.user._id };
+        const { page = 1, limit = 10, search, type, status } = req.query;//دي بتقرأ البيانات اللي موجودة بعد ? في الـ URL.
+        let dbQuery = { userId: req.user._id };// ادويه المستخدم لحالي
 
         if (search) {
             dbQuery.$or = [

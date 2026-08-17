@@ -1,5 +1,6 @@
-const { body, validationResult } = require("express-validator");
-
+const { body } = require("express-validator");
+// الـ userValidation.js بيفحص البيانات أول ما تيجي من الـ Request وقبل ما تدخل الـ Controller.
+// الـ Model بيحدد شكل البيانات وقواعدها داخل MongoDB.
 
 const nameRule = body("name")
   .notEmpty()
@@ -20,27 +21,20 @@ const passwordRule = body("password")
   .withMessage("Password must be at least 6 characters");
 
 
-const registerValidation = [nameRule, emailRule, passwordRule];
+// const registerValidation = [nameRule, emailRule, passwordRule];
 
 
-const loginValidation = [emailRule, passwordRule];
+// const loginValidation = [emailRule, passwordRule];
 
+const validateRegister = [
+  nameRule,
+  emailRule,
+  passwordRule
+];
 
-const handleValidationErrors = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({
-      success: false,
-      message: "Validation failed",
-      errors: errors.array(),
-    });
-  }
-  next();
-};
-
-
-const validateRegister = [...registerValidation, handleValidationErrors];
-
-const validateLogin = [...loginValidation, handleValidationErrors];
+const validateLogin = [
+  emailRule,
+  passwordRule
+];
 
 module.exports = { validateRegister, validateLogin };

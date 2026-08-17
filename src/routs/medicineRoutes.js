@@ -1,27 +1,38 @@
 const express = require("express");
-const upload = require("../middlewares/uploadMiddleware");
-const medicineValidation = require("../validations/medicineValidation.js");
 
 const {
-    createMedicine,
-    getMedicines,
-    getMedicineById,
-    updateMedicine,
-    deleteMedicine
-} = require('../controllers/mediController');
+  protect,
+  handleValidationErrors,
+  upload
+} = require("../middlewares");
 
-const { protect } = require('../middlewares/authMiddleware');
+const medicineValidation = require("../validations/medicineValidation");
+
+const {
+  createMedicine,
+  getMedicines,
+  getMedicineById,
+  updateMedicine,
+  deleteMedicine
+} = require("../controllers/mediController");
 
 const router = express.Router();
-
-router.put("/:id", protect, updateMedicine);
 
 router.get("/", protect, getMedicines);
 
 router.get("/:id", protect, getMedicineById);
 
-router.delete("/:id", protect, deleteMedicine);
+router.post(
+  "/",
+  protect,
+  upload.single("image"),
+  medicineValidation,
+  handleValidationErrors,
+  createMedicine
+);
 
-router.post("/", protect, medicineValidation, upload.single("image"), createMedicine);
+router.put("/:id", protect, updateMedicine);
+
+router.delete("/:id", protect, deleteMedicine);
 
 module.exports = router;

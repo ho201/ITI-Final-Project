@@ -4,7 +4,7 @@ const logger = require("./logger.js");
 const notFoundMiddleware = require("./notFoundMiddleware.js");
 const { validateCreate, validateUpdate } = require("./reminderMiddleware.js");
 const handleValidationErrors = require("./validationMiddleware.js");
-
+const upload = require("./uploadMiddleware.js");
 module.exports = {
     protect,
     authorizeRoles,
@@ -13,5 +13,6 @@ module.exports = {
     notFoundMiddleware,
     validateCreate,
     validateUpdate,
-    handleValidationErrors
+    handleValidationErrors,
+    upload
 };

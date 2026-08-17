@@ -1,47 +1,36 @@
-const { body, validationResult } = require("express-validator");
+const { body } = require("express-validator");
 
 const medicineValidation = [
-    body("name")
-        .trim()
-        .notEmpty()
-        .withMessage("Medicine name is required."),
-    
-    body("dosage")
-        .trim()
-        .notEmpty()
-        .withMessage("Dosage is required."),
+  body("name")
+    .trim()
+    .notEmpty()
+    .withMessage("Medicine name is required."),
 
-    body("type")
-        .isIn([
-            "capsule", 
-            "tablet", 
-            "cream", 
-            "drops", 
-            "syrup", 
-            "injection", 
-            "other"])
-        .withMessage("Invalid medicine type."),
-    
-    body("description")
-        .optional()
-        .trim(),
+  body("dosage")
+    .trim()
+    .notEmpty()
+    .withMessage("Dosage is required."),
 
-    body("activeIngredient")
-        .trim()
-        .notEmpty()
-        .withMessage("Active ingredient is required"),
+  body("type")
+    .isIn([
+      "capsule",
+      "tablet",
+      "cream",
+      "drops",
+      "syrup",
+      "injection",
+      "other"
+    ])
+    .withMessage("Invalid medicine type."),
 
-        (req, res, next) => {
-            const errors = validationResult(req);
+  body("description")
+    .optional()
+    .trim(),
 
-            if(!errors.isEmpty()){
-                return res.status(400).json({
-                    success: false,
-                    errors: errors.array()
-                });
-            }
-            next();
-        }
+  body("activeIngredient")
+    .trim()
+    .notEmpty()
+    .withMessage("Active ingredient is required"),
 ];
 
 module.exports = medicineValidation;
