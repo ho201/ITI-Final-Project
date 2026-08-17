@@ -17,7 +17,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use(logger);//وده معناه إن الـ logger بيتطبق على كل الـ routes اللي بعده.
+app.use(logger);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

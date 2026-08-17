@@ -61,15 +61,6 @@ const profile = async (req, res, next) => {
   try {
     return responseHandler(res, 200, "User profile", {
       user: {
-//    protect
-//    ↓
-// يتأكد من JWT
-//    ↓
-// يجيب User من MongoDB
-//    ↓
-// يحطه في req.user
-//    ↓
-// profile
         id: req.user._id,
         name: req.user.name,
         email: req.user.email,
@@ -82,7 +73,7 @@ const profile = async (req, res, next) => {
     next(err);
   }
 }
-// e بالفعل بيتحقق من الـ JWT ويجيب المستخدم من قاعدة البيانات ويحطه في req.user، فمش محتاجين نعمل Query تانية في profile.
+
 const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find().select("-password");

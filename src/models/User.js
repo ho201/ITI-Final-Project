@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Password is required"],
       minlength: [6, "Password must be at least 6 characters"],
-      select: false,//دي معناها إن الـ password مش هيرجع تلقائيًا مع Queries بتاعة User.
+      select: false,
     },
 
     role: {
@@ -33,20 +33,11 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-//     createdAt
-//   updatedAt
   }
 );
 
-userSchema.pre("save", async function () {//قبل ما الـ User يتعمله Save في MongoDB، نفذ الكود ده.
+userSchema.pre("save", async function () {
   if (!this.isModified("password")) return;
-// هنا this بتشير إلى الـ User document الحالي اللي بيتحفظ.
-
-// لو الباسورد متغيرش، متعملوش Hash مرة تانية.
-
-// ليه؟
-
-// لأن لو عملنا Hash للـ hash نفسه كل مرة، هنبوظ الباسورد.
 
   this.password = await bcrypt.hash(this.password, 10);
 });
