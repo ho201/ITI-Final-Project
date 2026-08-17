@@ -19,7 +19,8 @@ const createHistory = async (req, res, next) => {
       "History created successfully.",
       { history }
     );
-  } catch (err) {
+  } 
+  catch (err) {
     next(err);
   }
 };
@@ -37,7 +38,8 @@ const getHistory = async (req, res, next) => {
       "History retrieved successfully.",
       { history }
     );
-  } catch (err) {
+  } 
+  catch (err) {
     next(err);
   }
 };
@@ -68,7 +70,8 @@ const updateHistory = async (req, res, next) => {
       "History updated successfully.",
       { history }
     );
-  } catch (err) {
+  } 
+  catch (err) {
     next(err);
   }
 };

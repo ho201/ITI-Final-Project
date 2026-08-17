@@ -21,10 +21,7 @@
 
 
 
-const {
-    createReminderSchema,
-    updateReminderSchema
-} = require("../validations/reminderValidation");
+const {createReminderSchema, updateReminderSchema} = require("../validations/reminderValidation");
 
 const responseHandler = require("../utils/responseHandler");
 
@@ -33,7 +30,8 @@ const validateSchema = (schema) => {
         try {
             schema.parse(req.body);
             next();
-        } catch (error) {
+        } 
+        catch (error) {
             return responseHandler(
                 res,
                 400,

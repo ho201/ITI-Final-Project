@@ -4,8 +4,8 @@ const responseHandler = require("../utils/responseHandler");
 const createMedicine = async (req, res, next) => {
     try {
         const medicine = await Medicine.create({
-            ...req.body,//يعني خد البيانات اللي المستخدم بعتها.
-            userId: req.user._id,//بنربط الدواء بالمستخدم ده.
+            ...req.body,
+            userId: req.user._id,
             image: req.file ? req.file.path : null
         });
 
@@ -15,15 +15,16 @@ const createMedicine = async (req, res, next) => {
             "Medicine created successfully",
             { medicine }
         );
-    } catch (error) {
+    } 
+    catch (error) {
         next(error);
     }
 };
 
 const getMedicines = async (req, res, next) => {
     try {
-        const { page = 1, limit = 10, search, type, status } = req.query;//دي بتقرأ البيانات اللي موجودة بعد ? في الـ URL.
-        let dbQuery = { userId: req.user._id };// ادويه المستخدم لحالي
+        const { page = 1, limit = 10, search, type, status } = req.query;
+        let dbQuery = { userId: req.user._id };
 
         if (search) {
             dbQuery.$or = [
@@ -59,7 +60,8 @@ const getMedicines = async (req, res, next) => {
             "Medicines retrieved successfully",
             result
         );
-    } catch (error) {
+    } 
+    catch (error) {
         next(error);
     }
 };
@@ -81,7 +83,8 @@ const getMedicineById = async (req, res, next) => {
             "Medicine retrieved successfully",
             { medicine }
         );
-    } catch (error) {
+    } 
+    catch (error) {
         next(error);
     }
 };
@@ -110,7 +113,8 @@ const updateMedicine = async (req, res, next) => {
             "Medicine updated successfully",
             { medicine }
         );
-    } catch (error) {
+    } 
+    catch (error) {
         next(error);
     }
 };
@@ -131,7 +135,8 @@ const deleteMedicine = async (req, res, next) => {
             200,
             "Medicine deleted successfully"
         );
-    } catch (error) {
+    } 
+    catch (error) {
         next(error);
     }
 };

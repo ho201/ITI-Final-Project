@@ -1,12 +1,11 @@
 const mongoose = require("mongoose");
 
 const medecineSchema = new mongoose.Schema({
-    userId: {//معناه إن كل دواء مرتبط بمستخدم معين.
-        type: mongoose.Schema.Types.ObjectId,//ده نوع الـ ID بتاع MongoDB.
-        // فالمستخدم ده يشوف أدويته هو فقط.
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true,//يعني مينفعش نعمل Medicine من غير User.
-        index: true //بيعمل Index على userId، وده بيساعد MongoDB لما نبحث عن أدوية مستخدم معين.
+        required: true,
+        index: true 
     },
     name: {
         type: String,
@@ -14,23 +13,18 @@ const medecineSchema = new mongoose.Schema({
         trim: true,
         index: true
     },
-    dosage: {//جرعة الدواء.
+    dosage: {
         type: String,
         required: true,
     },
     type: {
         type: String,
-        enum: ["capsule", "tablet", "cream", "drops", "syrup", "injection", "other"],// النوع لازم يكون يكون واحد من دول
+        enum: ["capsule", "tablet", "cream", "drops", "syrup", "injection", "other"],
         required: true
     },
     status: {
         type: String,
         enum: ["active", "completed", "suspended"],
-// active = الدواء نشط / المستخدم لسه بياخده.
-// completed = خلصت فترة الدواء أو المستخدم أنهى الجرعة/العلاج.
-// suspended = الدواء متوقف مؤقتًا، يعني المستخدم كان بياخده لكن وقفه حاليًا.
-
-
         default: "active",
         index: true 
     },
@@ -41,12 +35,13 @@ const medecineSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
-    activeIngredient: {//المادة الفعالة في الدواء.
+    activeIngredient: {
         type: String,
-        required: true,//وهي required لأن المشروع محتاجها في البحث والفلترة.
+        required: true,
         trim: true,
     }
-}, {
+}, 
+{
     timestamps: true
 });
 

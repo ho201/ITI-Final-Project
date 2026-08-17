@@ -37,7 +37,8 @@ const createReminder = async (req, res, next) => {
             "Reminder created successfully",
             newReminder
         );
-    } catch (error) {
+    } 
+    catch (error) {
         next(error);
     }
 };
@@ -55,7 +56,8 @@ const getUserReminders = async (req, res, next) => {
             "Reminders fetched successfully",
             reminders
         );
-    } catch (error) {
+    } 
+    catch (error) {
         next(error);
     }
 };
@@ -117,7 +119,9 @@ const updateReminder = async (req, res, next) => {
 
         if (updateData.frequency === "Specific Days") {
             reminder.days = updateData.days || [];
-        } else if (updateData.frequency) {
+        } 
+        
+        else if (updateData.frequency) {
             reminder.days = [];
         }
 

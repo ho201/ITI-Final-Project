@@ -41,9 +41,12 @@ const createReminderSchema = z.object({
         "Invalid Medicine ID format"
     ),
 
-    time: z.string().min(1, "Reminder time cannot be empty"),
+    time: z.string().regex(
+        /^([01]\d|2[0-3]):([0-5]\d)$/,
+        "Invalid time format. Use HH:MM"
+    ),
 
-    dosageQuantity: z.string().min(
+    dosageQuantity: z.string().trim().min(
         1,
         "Dosage quantity cannot be empty"
     ),
@@ -73,9 +76,15 @@ const updateReminderSchema = z.object({
         "Invalid Medicine ID format"
     ).optional(),
 
-    time: z.string().min(1).optional(),
+    time: z.string().regex(
+        /^([01]\d|2[0-3]):([0-5]\d)$/,
+        "Invalid time format. Use HH:MM"
+    ),
 
-    dosageQuantity: z.string().min(1).optional(),
+    dosageQuantity: z.string().trim().min(
+        1,
+        "Dosage quantity cannot be empty"
+    ),
 
     frequency: z.enum([
         "Daily",
@@ -102,3 +111,8 @@ module.exports = {
     createReminderSchema,
     updateReminderSchema
 };
+
+
+
+
+
