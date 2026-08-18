@@ -296,7 +296,6 @@ The image field name is:
 ```text
 image
 ```
-
 ### Medicine Search
 
 Medicines can be searched by:
