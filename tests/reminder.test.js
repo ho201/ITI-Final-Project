@@ -1,28 +1,28 @@
 const test = require("node:test");
 const assert = require("node:assert");
+const { validationResult } = require("express-validator");
+const { validateRegister } = require("../src/validations/userValidation");
 
-const { createReminderSchema } =
-    require("../src/validations/reminderValidation");
+const runRules = async (body) => {
+    const req = { body };
+    await Promise.all(validateRegister.map((rule) => rule(req, {}, () => {})));
+    return validationResult(req);
+};
 
-test("Valid reminder should pass", () => {
-    const result = createReminderSchema.safeParse({
-        medicineId: "507f1f77bcf86cd799439011",
-        time: "08:00",
-        dosageQuantity: "1 tablet",
-        frequency: "Daily"
+test("Valid user registration should pass", async () => {
+    const errors = await runRules({
+        name: "Test User",
+        email: "test@example.com",
+        password: "password123"
     });
-
-    assert.strictEqual(result.success, true);
+    assert.strictEqual(errors.isEmpty(), true);
 });
 
-test("Invalid reminder should fail", () => {
-    const result = createReminderSchema.safeParse({
-        medicineId: "123",
-        time: "08:00",
-        dosageQuantity: "1 tablet",
-        frequency: "Daily"
+test("Invalid user registration should fail", async () => {
+    const errors = await runRules({
+        name: "",
+        email: "invalid-email",
+        password: "123"
     });
-
-    assert.strictEqual(result.success, false);
+    assert.strictEqual(errors.isEmpty(), false);
 });
-
