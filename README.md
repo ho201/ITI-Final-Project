@@ -26,6 +26,7 @@ The project provides secure user authentication, role-based authorization, medic
 * Reminder validation using Zod
 * Reminder time conflict checking
 * Medication dose history
+* History ownership and authorization checks
 * Request logging
 * Global error handling
 * 404 Not Found handling
@@ -174,7 +175,6 @@ JWT_EXPIRES_IN=
 | `JWT_SECRET`     | Secret key used to generate and verify JWT tokens |
 | `JWT_EXPIRES_IN` | JWT token expiration time                         |
 
-
 ---
 
 ## Running the Application
@@ -296,6 +296,8 @@ The image field name is:
 ```text
 image
 ```
+
+The image is optional.
 
 ### Medicine Search
 
@@ -430,6 +432,15 @@ History records are associated with:
 * Reminder
 * Dose status
 * Taken time
+
+### History Authorization
+
+When creating a history record, the system verifies that the selected medicine belongs to the authenticated user.
+
+If a `reminderId` is provided, the system also verifies that:
+
+* The reminder belongs to the authenticated user.
+* The reminder is associated with the selected medicine.
 
 Users can only access and update their own history records.
 
@@ -568,6 +579,8 @@ The image field is:
 ```text
 image
 ```
+
+The image upload is optional.
 
 ---
 
@@ -715,10 +728,10 @@ Current test files:
 
 ```text
 tests/medicine.test.js
-tests/reminder.test.js
+tests/user.test.js
 ```
 
-The tests cover basic medicine data validation and reminder validation.
+The tests cover basic medicine data validation and user data validation.
 
 Run the test suite using:
 

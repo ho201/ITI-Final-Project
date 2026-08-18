@@ -1,9 +1,36 @@
 const History = require("../models/History");
+const Medicine = require("../models/Medicine");
+const Reminder = require("../models/Reminder");
 const responseHandler = require("../utils/responseHandler");
 
 const createHistory = async (req, res, next) => {
   try {
     const { medicineId, reminderId, status, takenAt } = req.body;
+
+    const medicine = await Medicine.findOne({
+      _id: medicineId,
+      userId: req.user._id,
+    });
+
+    if (!medicine) {
+      const error = new Error("Medicine not found or unauthorized.");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    if (reminderId) {
+      const reminder = await Reminder.findOne({
+        _id: reminderId,
+        userId: req.user._id,
+        medicineId,
+      });
+
+      if (!reminder) {
+        const error = new Error("Reminder not found or unauthorized.");
+        error.statusCode = 404;
+        throw error;
+      }
+    }
 
     const history = await History.create({
       userId: req.user._id,
