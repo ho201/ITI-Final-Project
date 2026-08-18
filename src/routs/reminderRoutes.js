@@ -5,7 +5,7 @@ const {
   protect,
   validateCreate,
   validateUpdate,
-} = require("../middlewares");
+} = require("../middlewares/index");
 
 const {
   createReminder,

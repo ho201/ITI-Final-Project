@@ -26,9 +26,17 @@ const reminderSchema = new mongoose.Schema({
         return this.frequency === 'Specific Days';
     }
     },
-    dosageQuantity: {
-        type: String,
-        required: [true, 'dosage quantity is required'] 
+    dosage: {
+        quantity: {
+            type: Number,
+            required: [true, 'Dosage quantity is required'],
+            min: [0.1, 'Quantity must be greater than 0']
+        },
+        unit: {
+            type: String,
+            required: [true, 'Dosage unit is required'],
+            enum: ['tablets', 'capsules', 'ml', 'mg', 'drops', 'puffs']
+        }
     },
     isActive: {
         type: Boolean,
