@@ -1,28 +1,46 @@
 const Reminder = require("../models/Reminder.js");
+const Medicine = require("../models/Medicine.js");
 const responseHandler = require("../utils/responseHandler.js");
 
 const createReminder = async (req, res, next) => {
     try {
         const userId = req.user.id;
-        const reminderData = req.body;
-        const { medicineId, time } = reminderData;
+        const { medicineId, time } = req.body;
 
+        // Check if medicine exists and belongs to the user
+        const medicine = await Medicine.findOne({
+            _id: medicineId,
+            userId
+        });
+
+        if (!medicine) {
+            const error = new Error("Medicine not found or unauthorized.");
+            error.statusCode = 404;
+            throw error;
+        }
+
+        // Check for duplicate reminder
         const existingReminder = await Reminder.findOne({
             userId,
-            medicineId, 
+            medicineId,
             time
         });
 
         if (existingReminder) {
-            const err = new Error("A reminder for this medicine at this time already exists. Please update the existing reminder instead of creating a new one.");
-            err.statusCode = 400;
-            throw err;
+            const error = new Error(
+                "A reminder for this medicine at this time already exists."
+            );
+            error.statusCode = 400;
+            throw error;
         }
 
         const newReminder = new Reminder({
             userId,
-            ...reminderData,
-            days: reminderData.frequency === "Specific Days" ? reminderData.days : undefined
+            ...req.body,
+            days:
+                req.body.frequency === "Specific Days"
+                    ? req.body.days
+                    : undefined
         });
 
         await newReminder.save();
@@ -33,12 +51,10 @@ const createReminder = async (req, res, next) => {
             "Reminder created successfully",
             newReminder
         );
-    } 
-    catch (error) {
+    } catch (error) {
         next(error);
     }
 };
-
 const getUserReminders = async (req, res, next) => {
     try {
         const userId = req.user.id;
