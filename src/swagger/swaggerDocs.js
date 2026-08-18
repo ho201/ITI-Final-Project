@@ -2,13 +2,13 @@
  * @swagger
  * tags:
  *   - name: Authentication
- *     description: User authentication APIs
+ *     description: User authentication and authorization APIs
  *   - name: Medicines
  *     description: Medicine management APIs
  *   - name: Reminders
- *     description: Reminder management APIs
+ *     description: Medication reminder management APIs
  *   - name: History
- *     description: Medicine dose history APIs
+ *     description: Medication dose history APIs
  */
 
 /**
@@ -30,6 +30,7 @@
  *             properties:
  *               name:
  *                 type: string
+ *                 maxLength: 100
  *                 example: Hoda Hatem
  *               email:
  *                 type: string
@@ -38,12 +39,15 @@
  *               password:
  *                 type: string
  *                 format: password
- *                 example: 123456
+ *                 minLength: 6
+ *                 example: "123456"
  *     responses:
  *       201:
  *         description: User registered successfully
  *       400:
  *         description: Validation error
+ *       409:
+ *         description: Email is already registered
  */
 
 /**
@@ -69,10 +73,13 @@
  *               password:
  *                 type: string
  *                 format: password
- *                 example: 123456
+ *                 minLength: 6
+ *                 example: "123456"
  *     responses:
  *       200:
  *         description: Login successful
+ *       400:
+ *         description: Validation error
  *       401:
  *         description: Invalid email or password
  */
@@ -81,13 +88,13 @@
  * @swagger
  * /auth/profile:
  *   get:
- *     summary: Get current logged-in user
+ *     summary: Get the current authenticated user's profile
  *     tags: [Authentication]
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Current user information
+ *         description: User profile retrieved successfully
  *       401:
  *         description: Unauthorized
  */
@@ -106,14 +113,14 @@
  *       401:
  *         description: Unauthorized
  *       403:
- *         description: Forbidden - Admin access required
+ *         description: Admin access required
  */
 
 /**
  * @swagger
  * /medicines:
  *   post:
- *     summary: Add a new medicine
+ *     summary: Create a new medicine
  *     tags: [Medicines]
  *     security:
  *       - bearerAuth: []
@@ -168,10 +175,58 @@
  * @swagger
  * /medicines:
  *   get:
- *     summary: Get all medicines
+ *     summary: Get the authenticated user's medicines
  *     tags: [Medicines]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *           minimum: 1
+ *         example: 1
+ *       - in: query
+ *         name: limit
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *           minimum: 1
+ *         example: 10
+ *       - in: query
+ *         name: search
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Search by medicine name or active ingredient
+ *         example: Panadol
+ *       - in: query
+ *         name: type
+ *         required: false
+ *         schema:
+ *           type: string
+ *           enum:
+ *             - capsule
+ *             - tablet
+ *             - cream
+ *             - drops
+ *             - syrup
+ *             - injection
+ *             - other
+ *         example: tablet
+ *       - in: query
+ *         name: status
+ *         required: false
+ *         schema:
+ *           type: string
+ *           enum:
+ *             - active
+ *             - completed
+ *             - suspended
+ *         example: active
  *     responses:
  *       200:
  *         description: Medicines retrieved successfully
@@ -183,7 +238,7 @@
  * @swagger
  * /medicines/{id}:
  *   get:
- *     summary: Get medicine by ID
+ *     summary: Get a medicine by ID
  *     tags: [Medicines]
  *     security:
  *       - bearerAuth: []
@@ -227,14 +282,34 @@
  *             properties:
  *               name:
  *                 type: string
+ *                 example: Panadol
  *               dosage:
  *                 type: string
+ *                 example: 500mg
  *               type:
  *                 type: string
+ *                 enum:
+ *                   - capsule
+ *                   - tablet
+ *                   - cream
+ *                   - drops
+ *                   - syrup
+ *                   - injection
+ *                   - other
+ *                 example: tablet
+ *               status:
+ *                 type: string
+ *                 enum:
+ *                   - active
+ *                   - completed
+ *                   - suspended
+ *                 example: active
  *               description:
  *                 type: string
+ *                 example: Pain relief medicine
  *               activeIngredient:
  *                 type: string
+ *                 example: Paracetamol
  *     responses:
  *       200:
  *         description: Medicine updated successfully
@@ -272,7 +347,7 @@
  * @swagger
  * /reminders:
  *   post:
- *     summary: Create a reminder
+ *     summary: Create a medication reminder
  *     tags: [Reminders]
  *     security:
  *       - bearerAuth: []
@@ -285,18 +360,38 @@
  *             required:
  *               - medicineId
  *               - time
- *               - dosageQuantity
+ *               - dosage
  *               - frequency
  *             properties:
  *               medicineId:
  *                 type: string
+ *                 pattern: '^[0-9a-fA-F]{24}$'
  *                 example: 665abc123456789012345678
  *               time:
  *                 type: string
+ *                 pattern: '^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$'
  *                 example: "08:00"
- *               dosageQuantity:
- *                 type: string
- *                 example: "1 tablet"
+ *               dosage:
+ *                 type: object
+ *                 required:
+ *                   - quantity
+ *                   - unit
+ *                 properties:
+ *                   quantity:
+ *                     type: number
+ *                     minimum: 0.1
+ *                     exclusiveMinimum: true
+ *                     example: 1
+ *                   unit:
+ *                     type: string
+ *                     enum:
+ *                       - tablets
+ *                       - capsules
+ *                       - ml
+ *                       - mg
+ *                       - drops
+ *                       - puffs
+ *                     example: tablets
  *               frequency:
  *                 type: string
  *                 enum:
@@ -319,11 +414,15 @@
  *                 example:
  *                   - Monday
  *                   - Wednesday
+ *               isActive:
+ *                 type: boolean
+ *                 default: true
+ *                 example: true
  *     responses:
  *       201:
  *         description: Reminder created successfully
  *       400:
- *         description: Validation error
+ *         description: Validation error or duplicate reminder
  *       401:
  *         description: Unauthorized
  */
@@ -332,7 +431,7 @@
  * @swagger
  * /reminders:
  *   get:
- *     summary: Get user's reminders
+ *     summary: Get the authenticated user's reminders
  *     tags: [Reminders]
  *     security:
  *       - bearerAuth: []
@@ -347,7 +446,7 @@
  * @swagger
  * /reminders/{id}:
  *   patch:
- *     summary: Update a reminder
+ *     summary: Update a medication reminder
  *     tags: [Reminders]
  *     security:
  *       - bearerAuth: []
@@ -365,30 +464,61 @@
  *           schema:
  *             type: object
  *             properties:
- *               medicineId:
- *                 type: string
  *               time:
  *                 type: string
- *                 example: "08:00"
- *               dosageQuantity:
- *                 type: string
+ *                 pattern: '^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$'
+ *                 example: "09:30"
+ *               dosage:
+ *                 type: object
+ *                 properties:
+ *                   quantity:
+ *                     type: number
+ *                     minimum: 0.1
+ *                     example: 2
+ *                   unit:
+ *                     type: string
+ *                     enum:
+ *                       - tablets
+ *                       - capsules
+ *                       - ml
+ *                       - mg
+ *                       - drops
+ *                       - puffs
+ *                     example: tablets
  *               frequency:
  *                 type: string
  *                 enum:
  *                   - Daily
  *                   - Weekly
  *                   - Specific Days
+ *                 example: Daily
  *               days:
  *                 type: array
  *                 items:
  *                   type: string
+ *                   enum:
+ *                     - Saturday
+ *                     - Sunday
+ *                     - Monday
+ *                     - Tuesday
+ *                     - Wednesday
+ *                     - Thursday
+ *                     - Friday
+ *                 example:
+ *                   - Monday
+ *                   - Friday
  *               isActive:
  *                 type: boolean
+ *                 example: false
  *     responses:
  *       200:
  *         description: Reminder updated successfully
+ *       400:
+ *         description: Validation error
  *       401:
  *         description: Unauthorized
+ *       403:
+ *         description: Unauthorized to update this reminder
  *       404:
  *         description: Reminder not found
  */
@@ -397,7 +527,7 @@
  * @swagger
  * /reminders/{id}:
  *   delete:
- *     summary: Delete a reminder
+ *     summary: Delete a medication reminder
  *     tags: [Reminders]
  *     security:
  *       - bearerAuth: []
@@ -413,6 +543,8 @@
  *         description: Reminder deleted successfully
  *       401:
  *         description: Unauthorized
+ *       403:
+ *         description: Unauthorized to delete this reminder
  *       404:
  *         description: Reminder not found
  */
@@ -421,7 +553,7 @@
  * @swagger
  * /history:
  *   post:
- *     summary: Create dose history
+ *     summary: Create a medication history record
  *     tags: [History]
  *     security:
  *       - bearerAuth: []
@@ -451,7 +583,7 @@
  *               takenAt:
  *                 type: string
  *                 format: date-time
- *                 example: 2026-08-15T08:00:00.000Z
+ *                 example: 2026-08-18T08:00:00.000Z
  *     responses:
  *       201:
  *         description: History created successfully
@@ -465,7 +597,7 @@
  * @swagger
  * /history:
  *   get:
- *     summary: Get user's dose history
+ *     summary: Get the authenticated user's medication history
  *     tags: [History]
  *     security:
  *       - bearerAuth: []
@@ -480,7 +612,7 @@
  * @swagger
  * /history/{id}:
  *   patch:
- *     summary: Update dose history
+ *     summary: Update a medication history record
  *     tags: [History]
  *     security:
  *       - bearerAuth: []
@@ -503,15 +635,18 @@
  *                 enum:
  *                   - Taken
  *                   - Missed
+ *                 example: Taken
  *               takenAt:
  *                 type: string
  *                 format: date-time
+ *                 example: 2026-08-18T08:00:00.000Z
  *     responses:
  *       200:
  *         description: History updated successfully
+ *       400:
+ *         description: Validation error
  *       401:
  *         description: Unauthorized
  *       404:
- *         description: History not found
+ *         description: History record not found
  */
-

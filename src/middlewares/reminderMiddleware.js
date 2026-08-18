@@ -1,7 +1,7 @@
 const {
     createReminderSchema,
     updateReminderSchema
-} = require("../validations/reminderValidationز.js");
+} = require("../validations/reminderValidation.js");
 
 const responseHandler = require("../utils/responseHandler.js");
 
