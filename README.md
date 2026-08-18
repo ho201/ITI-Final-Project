@@ -116,7 +116,7 @@ MediCare Reminder/
 │
 ├── tests/
 │   ├── medicine.test.js
-│   └── reminder.test.js
+│   └── user.test.js
 │
 ├── .env.example
 ├── .gitignore
@@ -159,10 +159,10 @@ Create a `.env` file in the root directory of the project.
 Use `.env.example` as a template:
 
 ```env
-PORT=3000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-JWT_EXPIRES_IN=7d
+PORT=
+MONGO_URI=
+JWT_SECRET=
+JWT_EXPIRES_IN=
 ```
 
 ### Environment Variables Description
@@ -174,7 +174,6 @@ JWT_EXPIRES_IN=7d
 | `JWT_SECRET`     | Secret key used to generate and verify JWT tokens |
 | `JWT_EXPIRES_IN` | JWT token expiration time                         |
 
-> **Important:** Never commit your `.env` file or expose secret values in the repository.
 
 ---
 
