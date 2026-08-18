@@ -7,31 +7,34 @@ const createHistory = async (req, res, next) => {
   try {
     const { medicineId, reminderId, status, takenAt } = req.body;
 
-    const medicine = await Medicine.findOne({
-      _id: medicineId,
-      userId: req.user._id,
-    });
+    // Check if medicine exists
+    const medicine = await Medicine.findById(medicineId);
 
     if (!medicine) {
-      const error = new Error("Medicine not found or unauthorized.");
+      const error = new Error("Medicine not found.");
       error.statusCode = 404;
       throw error;
     }
 
-    if (reminderId) {
-      const reminder = await Reminder.findOne({
-        _id: reminderId,
-        userId: req.user._id,
-        medicineId,
-      });
+    // Check if reminder exists
+    const reminder = await Reminder.findById(reminderId);
 
-      if (!reminder) {
-        const error = new Error("Reminder not found or unauthorized.");
-        error.statusCode = 404;
-        throw error;
-      }
+    if (!reminder) {
+      const error = new Error("Reminder not found.");
+      error.statusCode = 404;
+      throw error;
     }
 
+    // Check if reminder belongs to this medicine
+    if (reminder.medicineId.toString() !== medicineId.toString()) {
+      const error = new Error(
+        "Reminder does not belong to this medicine."
+      );
+      error.statusCode = 400;
+      throw error;
+    }
+
+    // Create history
     const history = await History.create({
       userId: req.user._id,
       medicineId,
@@ -46,8 +49,7 @@ const createHistory = async (req, res, next) => {
       "History created successfully.",
       { history }
     );
-  } 
-  catch (err) {
+  } catch (err) {
     next(err);
   }
 };
