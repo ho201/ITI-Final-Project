@@ -1,24 +1,20 @@
 const Reminder = require("../models/Reminder.js");
-const responseHandler = require("../utils/responseHandler");
+const responseHandler = require("../utils/responseHandler.js");
 
 const createReminder = async (req, res, next) => {
     try {
         const userId = req.user.id;
         const reminderData = req.body;
-
-        const { medicineId, time, frequency } = reminderData;
+        const { medicineId, time } = reminderData;
 
         const existingReminder = await Reminder.findOne({
             userId,
-            medicineId,
-            time,
-            isActive: true
+            medicineId, 
+            time
         });
 
         if (existingReminder) {
-            const err = new Error(
-                "A reminder for this medicine at this exact time already exists."
-            );
+            const err = new Error("A reminder for this medicine at this time already exists. Please update the existing reminder instead of creating a new one.");
             err.statusCode = 400;
             throw err;
         }
@@ -26,7 +22,7 @@ const createReminder = async (req, res, next) => {
         const newReminder = new Reminder({
             userId,
             ...reminderData,
-            days: frequency === "Specific Days" ? reminderData.days : []
+            days: reminderData.frequency === "Specific Days" ? reminderData.days : undefined
         });
 
         await newReminder.save();
@@ -37,8 +33,7 @@ const createReminder = async (req, res, next) => {
             "Reminder created successfully",
             newReminder
         );
-    } 
-    catch (error) {
+    } catch (error) {
         next(error);
     }
 };
@@ -56,8 +51,7 @@ const getUserReminders = async (req, res, next) => {
             "Reminders fetched successfully",
             reminders
         );
-    } 
-    catch (error) {
+    } catch (error) {
         next(error);
     }
 };
@@ -76,58 +70,44 @@ const updateReminder = async (req, res, next) => {
             throw err;
         }
 
-        if (reminder.userId.toString() !== userId.toString()) {
+        if (reminder.userId.toString() !== userId) {
             const err = new Error("Unauthorized to update this reminder");
             err.statusCode = 403;
             throw err;
         }
 
-        const newMedicineId = updateData.medicineId || reminder.medicineId;
-        const newTime = updateData.time || reminder.time;
-
-        const existingReminder = await Reminder.findOne({
-            _id: { $ne: reminderId },
-            userId,
-            medicineId: newMedicineId,
-            time: newTime,
-            isActive: true
-        });
-
-        if (existingReminder) {
-            const err = new Error(
-                "A reminder for this medicine at this exact time already exists."
-            );
-            err.statusCode = 400;
-            throw err;
-        }
-
-        if (updateData.medicineId) {
-            reminder.medicineId = updateData.medicineId;
-        }
-
-        if (updateData.time) {
-            reminder.time = updateData.time;
-        }
+        if (updateData.time) reminder.time = updateData.time;
 
         if (updateData.frequency) {
             reminder.frequency = updateData.frequency;
-        }
 
-        if (updateData.dosageQuantity) {
-            reminder.dosageQuantity = updateData.dosageQuantity;
-        }
-
-        if (updateData.frequency === "Specific Days") {
-            reminder.days = updateData.days || [];
+            if (updateData.frequency === "Specific Days") {
+                if (!updateData.days || updateData.days.length === 0) {
+                    const err = new Error("Days are required when frequency is Specific Days");
+                    err.statusCode = 400;
+                    throw err;
+                }
+                reminder.days = updateData.days;
+            } 
+            else {
+                reminder.days = undefined; 
+            }
         } 
-        
-        else if (updateData.frequency) {
-            reminder.days = [];
+        else if (updateData.days) {
+            if (reminder.frequency === "Specific Days") {
+                reminder.days = updateData.days;
+            }
         }
 
-        if (typeof updateData.isActive === "boolean") {
-            reminder.isActive = updateData.isActive;
+        if (updateData.dosage) {
+            if (updateData.dosage.quantity !== undefined)
+                reminder.dosage.quantity = updateData.dosage.quantity;
+            if (updateData.dosage.unit !== undefined)
+                reminder.dosage.unit = updateData.dosage.unit;
         }
+
+        if (typeof updateData.isActive === "boolean")
+            reminder.isActive = updateData.isActive;
 
         await reminder.save();
 
@@ -155,7 +135,7 @@ const deleteReminder = async (req, res, next) => {
             throw err;
         }
 
-        if (reminder.userId.toString() !== userId.toString()) {
+        if (reminder.userId.toString() !== userId) {
             const err = new Error("Unauthorized to delete this reminder");
             err.statusCode = 403;
             throw err;
