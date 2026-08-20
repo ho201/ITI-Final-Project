@@ -1,0 +1,1568 @@
+{
+  "info": {
+    "_postman_id": "be52a7be-6a25-4443-a7a8-d43b1d38bb8c",
+    "name": "MediCare Reminder API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54398561"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "userRegister",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Test User\",\r\n  \"email\": \"testuser@gmail.com\",\r\n  \"password\": \"123456\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "userLogin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"testuser@gmail.com\",\r\n  \"password\": \"123456\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "userProfile",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"hoda@gmail.com\",\r\n  \"password\": \"123456\"\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/auth/profile",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "auth",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get All Users with user role before apdate in db",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZlNTZhZGU1ZmRmNjEyMjU3YjVlYyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjI1NDYzLCJleHAiOjE3ODc4MzAyNjN9.gX5rfPTEfum3CU81Jfv2ypofdfsgMkcIVDMrkfndLGM",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"hoda@gmail.com\",\r\n  \"password\": \"123456\"\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/auth/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "auth",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "adminRegister",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Ahmed Hatem\",\r\n  \"email\": \"ahmed@gmail.com\",\r\n  \"password\": \"789456\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "adminLogin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"ahmed@gmail.com\",\r\n  \"password\": \"789456\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unauthorized",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"Missed\"\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/auth/profile",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "auth",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "register to second user",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Second User\",\r\n  \"email\": \"second@gmail.com\",\r\n  \"password\": \"123456\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login to second user",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"second@gmail.com\",\r\n  \"password\": \"123456\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get All Users with admin role",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZlNTZhZGU1ZmRmNjEyMjU3YjVlYyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjI1NDYzLCJleHAiOjE3ODc4MzAyNjN9.gX5rfPTEfum3CU81Jfv2ypofdfsgMkcIVDMrkfndLGM",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/auth/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "auth",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Medicines",
+      "item": [
+        {
+          "name": "create first Medicine",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "panadol",
+                  "type": "text",
+                  "uuid": "349e03fa-ffa4-45de-8d49-f0ff1237e12c"
+                },
+                {
+                  "key": "dosage",
+                  "value": "500mg",
+                  "type": "text",
+                  "uuid": "78aee787-4e7a-4f59-b934-508d0a475b3b"
+                },
+                {
+                  "key": "type",
+                  "value": "tablet",
+                  "type": "text",
+                  "uuid": "9a11ecec-b4dd-472f-ae19-10bfb7d7c70d"
+                },
+                {
+                  "key": "description",
+                  "value": "Pain relief medicine",
+                  "type": "text",
+                  "uuid": "cc818d67-64f8-4ce4-aaec-add9b73abb98"
+                },
+                {
+                  "key": "activeIngredient",
+                  "value": "Paracetamol",
+                  "type": "text",
+                  "uuid": "1ff61432-7b0f-4f71-837d-fbe5b36ba291"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "d6c94571-ed37-4712-941b-fb8f2550aa60",
+                  "src": "postman-cloud:///1f19c837-4fa8-4520-8172-19c42a69f33e"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/medicines/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "medicines",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "usersMedicines",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Panadol\",\r\n  \"dosage\": \"500 mg\",\r\n  \"type\": \"tablet\",\r\n  \"description\": \"Used to relieve pain and reduce fever.\",\r\n  \"activeIngredient\": \"Paracetamol\"\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/medicines?page=1&limit=10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "medicines"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "medicineById",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/medicines/6a86da09de5fdf612257b5e8",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "medicines",
+                "6a86da09de5fdf612257b5e8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update Medicine With anouther User Token",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODQ4NDU5YmI1MWE3MmQwYWNlNTc5MiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MDcwMDczLCJleHAiOjE3ODc2NzQ4NzN9.BucqZRnYAE1W01xz_KlYH-8uVQKG2JcLTdvEOqHqPWo",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Panadol Extra",
+                  "type": "text",
+                  "uuid": "c9995dff-d3cb-4919-b111-93768e4ee35d"
+                },
+                {
+                  "key": "dosage",
+                  "value": "650mg",
+                  "type": "text",
+                  "uuid": "afa26f3f-98e1-4bde-b8a9-e8748b64ef01"
+                },
+                {
+                  "key": "type",
+                  "value": "tablet",
+                  "type": "text",
+                  "uuid": "8025d816-fbdd-4f43-afad-17401799e253"
+                },
+                {
+                  "key": "status",
+                  "value": "active",
+                  "type": "text",
+                  "uuid": "356f4103-1caf-4d89-adb9-3f863fa18ff7"
+                },
+                {
+                  "key": "description",
+                  "value": "Updated pain relief medicine",
+                  "type": "text",
+                  "uuid": "75c56565-cc22-4ed3-9d57-7bd641acda6e"
+                },
+                {
+                  "key": "activeIngredient",
+                  "value": "Paracetamol",
+                  "type": "text",
+                  "uuid": "2b223961-4ca1-45a4-aa34-f2224b6491c7"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/medicines/6a86da09de5fdf612257b5e8",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "medicines",
+                "6a86da09de5fdf612257b5e8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete Medicine by anouther user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZlM2M5ZGU1ZmRmNjEyMjU3YjVlYiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjI1MTU0LCJleHAiOjE3ODc4Mjk5NTR9.W5FhF-b1mUUkpnr55nG3SY4L3aOUwnxIV3ov72GfPMw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/medicines/6a86eb69de5fdf612257b5ed",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "medicines",
+                "6a86eb69de5fdf612257b5ed"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "medicineSearch",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/medicines?search=Panadol",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "medicines"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Panadol"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "medicineFilter",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/medicines?type=tablet",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "medicines"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "tablet"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "medicine Pagination Without Token",
+          "request": {
+            "auth": {
+              "type": "jwt",
+              "jwt": [
+                {
+                  "key": "secret",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODQ4ODc2YmI1MWE3MmQwYWNlNTc5MyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc4NzA3MDY5MCwiZXhwIjoxNzg3Njc1NDkwfQ.55ze-JtxXxPE_IPmiLvV7uZvmHv41LjAP-H5Lr_mXdw",
+                  "type": "string"
+                },
+                {
+                  "key": "algorithm",
+                  "value": "HS256",
+                  "type": "string"
+                },
+                {
+                  "key": "isSecretBase64Encoded",
+                  "value": false,
+                  "type": "boolean"
+                },
+                {
+                  "key": "payload",
+                  "value": "{}",
+                  "type": "string"
+                },
+                {
+                  "key": "addTokenTo",
+                  "value": "header",
+                  "type": "string"
+                },
+                {
+                  "key": "headerPrefix",
+                  "value": "Bearer",
+                  "type": "string"
+                },
+                {
+                  "key": "queryParamKey",
+                  "value": "token",
+                  "type": "string"
+                },
+                {
+                  "key": "header",
+                  "value": "{}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/medicines?page=1&limit=10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "medicines"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "medicine Pagination With Token",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/medicines?page=1&limit=10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "medicines"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateMedicine",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Panadol Extra",
+                  "type": "text",
+                  "uuid": "eb2ebb02-754c-4e0f-af7b-b5c357c6ba86"
+                },
+                {
+                  "key": "dosage",
+                  "value": "650mg",
+                  "type": "text",
+                  "uuid": "3ea33456-312b-44f4-97cb-7d6695eff09f"
+                },
+                {
+                  "key": "type",
+                  "value": "tablet",
+                  "type": "text",
+                  "uuid": "b7c96605-054d-4498-b693-cd8310f0e6c8"
+                },
+                {
+                  "key": "status",
+                  "value": "active",
+                  "type": "text",
+                  "uuid": "95f2bad4-0c32-4437-af96-00a1fc5d3d26"
+                },
+                {
+                  "key": "description",
+                  "value": "Updated pain relief medicine",
+                  "type": "text",
+                  "uuid": "d7432855-8ccb-401a-96a5-933288d1b679"
+                },
+                {
+                  "key": "activeIngredient",
+                  "value": "paracetamol",
+                  "type": "text",
+                  "uuid": "4a1e36a2-a8da-4cf9-8f20-033baa5dab81"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/medicines/6a86da09de5fdf612257b5e8",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "medicines",
+                "6a86da09de5fdf612257b5e8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get medicine for first user by second user",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "add second medicine",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Augmentin",
+                  "type": "text",
+                  "uuid": "37094d05-ada0-44c2-aec8-bf4c4ad1ec8c"
+                },
+                {
+                  "key": "dosage",
+                  "value": "625mg",
+                  "type": "text",
+                  "uuid": "177a97f0-4d01-4fb2-89ac-a5911a98a4f6"
+                },
+                {
+                  "key": "type",
+                  "value": "tablet",
+                  "type": "text",
+                  "uuid": "0962bbdf-2102-45b5-b240-052fcf61f9e3"
+                },
+                {
+                  "key": "description",
+                  "value": "Antibiotic for bacterial infections",
+                  "type": "text",
+                  "uuid": "f217c740-8b92-4fa2-8be2-e60828a2ba13"
+                },
+                {
+                  "key": "activeIngredient",
+                  "value": "Amoxicillin and Clavulanic Acid",
+                  "type": "text",
+                  "uuid": "39656314-0e28-4e7e-8126-f429d8ea37b0"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/medicines/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "medicines",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete second medicine by it is user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/medicines/6a86eb69de5fdf612257b5ed",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "medicines",
+                "6a86eb69de5fdf612257b5ed"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reminders",
+      "item": [
+        {
+          "name": "createReminder",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"medicineId\": \"6a86da09de5fdf612257b5e8\",\r\n  \"time\": \"08:00\",\r\n  \"frequency\": \"Daily\",\r\n  \"dosage\": {\r\n    \"quantity\": 1,\r\n    \"unit\": \"tablets\"\r\n  },\r\n  \"isActive\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/reminders/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "reminders",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "usersReminders",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODQ4NDU5YmI1MWE3MmQwYWNlNTc5MiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MDcwMDczLCJleHAiOjE3ODc2NzQ4NzN9.BucqZRnYAE1W01xz_KlYH-8uVQKG2JcLTdvEOqHqPWo",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/reminders/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "reminders",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update Reminder with anouther id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"time\": \"09:30\",\r\n  \"isActive\": false\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/reminders/6a86da09de5fdf612257b5e8",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "reminders",
+                "6a86da09de5fdf612257b5e8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteReminder",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODQ4NDU5YmI1MWE3MmQwYWNlNTc5MiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MDcwMDczLCJleHAiOjE3ODc2NzQ4NzN9.BucqZRnYAE1W01xz_KlYH-8uVQKG2JcLTdvEOqHqPWo",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"time\": \"09:30\",\r\n  \"dosage\": {\r\n    \"quantity\": 2,\r\n    \"unit\": \"tablets\"\r\n  },\r\n  \"frequency\": \"Daily\",\r\n  \"days\": [\r\n    \"Monday\",\r\n    \"Friday\"\r\n  ],\r\n  \"isActive\": false\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/reminders/6a849057bb51a72d0ace5795",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "reminders",
+                "6a849057bb51a72d0ace5795"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "reminderSearch",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/reminders?search=Panadol",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "reminders"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Panadol"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filter by frequency",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/reminders?frequency=Daily",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "reminders"
+              ],
+              "query": [
+                {
+                  "key": "frequency",
+                  "value": "Daily"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filter active",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/reminders?isActive=true",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "reminders"
+              ],
+              "query": [
+                {
+                  "key": "isActive",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filter by medicine",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/reminders?medicineId=6a86da09de5fdf612257b5e8",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "reminders"
+              ],
+              "query": [
+                {
+                  "key": "medicineId",
+                  "value": "6a86da09de5fdf612257b5e8"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update reminder with it is id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"time\": \"09:30\",\r\n  \"isActive\": false\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/reminders/6a86de31de5fdf612257b5e9",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "reminders",
+                "6a86de31de5fdf612257b5e9"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update with specific days",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"frequency\": \"Specific Days\",\r\n  \"days\": [\r\n    \"Monday\",\r\n    \"Wednesday\",\r\n    \"Friday\"\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/reminders/6a86de31de5fdf612257b5e9",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "reminders",
+                "6a86de31de5fdf612257b5e9"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "History",
+      "item": [
+        {
+          "name": "createHistory",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"medicineId\": \"6a86da09de5fdf612257b5e8\",\r\n  \"reminderId\": \"6a86de31de5fdf612257b5e9\",\r\n  \"status\": \"Taken\",\r\n  \"takenAt\": \"2026-08-20T08:00:00.000Z\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/history",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "history"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "usersHistory",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODQ4NDU5YmI1MWE3MmQwYWNlNTc5MiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MDcwMDczLCJleHAiOjE3ODc2NzQ4NzN9.BucqZRnYAE1W01xz_KlYH-8uVQKG2JcLTdvEOqHqPWo",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"medicineId\": \"665abc123456789012345678\",\r\n  \"reminderId\": \"665abc123456789012345679\",\r\n  \"status\": \"Taken\",\r\n  \"takenAt\": \"2026-08-18T08:00:00.000Z\"\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/history/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "history",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateHistory",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"Missed\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/history/6a86e147de5fdf612257b5ea",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "history",
+                "6a86e147de5fdf612257b5ea"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filter by status",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/history?status=Taken",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "history"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "Taken"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search by medicine name",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODZkNmQ0YjVjNmM2Y2E1OGY0YzkwNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjIxNzMzLCJleHAiOjE3ODc4MjY1MzN9.pLtv0QRnlUOKVGsxoD1lxbsmvk-njtC8JjWQFhSPDXE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/history?6a86da09de5fdf612257b5e8",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "history"
+              ],
+              "query": [
+                {
+                  "key": "6a86da09de5fdf612257b5e8",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unauthorized",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"Missed\"\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/history",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "history"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

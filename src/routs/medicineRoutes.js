@@ -32,11 +32,11 @@ router.post(
 
 router.put(
   "/:id",
-   protect,
-   upload.single("image"),
-   medicineValidation,
-   handleValidationErrors,
-    updateMedicine);
+  protect,
+  upload.single("image"),
+  medicineValidation,
+  handleValidationErrors,
+  updateMedicine);
 
 router.delete("/:id", protect, deleteMedicine);
 

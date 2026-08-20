@@ -2,58 +2,63 @@
 
 **MediCare Reminder** is a RESTful API for managing medicines, medication reminders, and medication history.
 
-The project provides secure user authentication, role-based authorization, medicine management, reminder scheduling, medication history tracking, image uploads, data validation, search and filtering, Swagger API documentation, logging, centralized error handling, automated tests, and Docker support.
+The project provides secure user authentication, role-based authorization, medicine management, reminder scheduling, medication history tracking, image uploads, data validation, search and filtering, Swagger API documentation, logging, centralized error handling, automated tests, seed data, and Docker support.
 
 ---
 
 ## Features
 
-* User registration and login
-* Password hashing using bcrypt
-* JWT-based authentication
-* Role-based authorization
-* Protected API routes
-* User profile management
-* Admin user management
-* Medicine CRUD operations
-* Medicine image upload
-* Medicine validation
-* Medicine status management
-* Medicine search
-* Medicine filtering by type and status
-* Medicine pagination
-* Reminder management
-* Reminder validation using Zod
-* Reminder time conflict checking
-* Medication dose history
-* History ownership and authorization checks
-* Request logging
-* Global error handling
-* 404 Not Found handling
-* Swagger API documentation
-* Seed data
-* Automated unit tests
-* Docker support
-* Docker Compose support
+- User registration and login
+- Password hashing using bcrypt
+- JWT-based authentication
+- Role-based authorization
+- Protected API routes
+- User profile management
+- Admin user management
+- Medicine CRUD operations
+- Medicine image upload
+- Medicine validation
+- Medicine status management
+- Medicine search
+- Medicine filtering by type and status
+- Medicine pagination
+- Reminder management
+- Reminder validation
+- Reminder ownership authorization
+- Reminder search
+- Reminder filtering by frequency, active status, and medicine
+- Reminder time conflict checking
+- Medication dose history
+- History ownership and authorization checks
+- History filtering by status and medicine
+- History search by medicine name
+- Request logging
+- Global error handling
+- 404 Not Found handling
+- Swagger API documentation
+- Seed data
+- Automated unit tests
+- Docker support
+- Docker Compose support
 
 ---
 
 ## Technologies
 
-* **Node.js**
-* **Express.js**
-* **MongoDB**
-* **Mongoose**
-* **JWT (JSON Web Token)**
-* **bcrypt**
-* **Express Validator**
-* **Zod**
-* **Multer**
-* **Swagger JSDoc**
-* **Swagger UI Express**
-* **Docker**
-* **Docker Compose**
-* **Node.js Test Runner**
+- **Node.js**
+- **Express.js**
+- **MongoDB**
+- **Mongoose**
+- **JWT (JSON Web Token)**
+- **bcrypt**
+- **Express Validator**
+- **Zod**
+- **Multer**
+- **Swagger JSDoc**
+- **Swagger UI Express**
+- **Docker**
+- **Docker Compose**
+- **Node.js Test Runner**
 
 ---
 
@@ -61,6 +66,7 @@ The project provides secure user authentication, role-based authorization, medic
 
 ```text
 MediCare Reminder/
+
 │
 ├── src/
 │   ├── config/
@@ -168,18 +174,18 @@ JWT_EXPIRES_IN=
 
 ### Environment Variables Description
 
-| Variable         | Description                                       |
-| ---------------- | ------------------------------------------------- |
-| `PORT`           | Port on which the server runs                     |
-| `MONGO_URI`      | MongoDB connection string                         |
-| `JWT_SECRET`     | Secret key used to generate and verify JWT tokens |
-| `JWT_EXPIRES_IN` | JWT token expiration time                         |
+| Variable          | Description                                       |
+|-------------------|---------------------------------------------------|
+| `PORT`            | Port on which the server runs                     |
+| `MONGO_URI`       | MongoDB connection string                         |
+| `JWT_SECRET`      | Secret key used to generate and verify JWT tokens |
+| `JWT_EXPIRES_IN`  | JWT token expiration time                         |
 
 ---
 
-## Running the Application
+# Running the Application
 
-### Start the server
+## Start the Server
 
 ```bash
 npm start
@@ -191,7 +197,7 @@ The API runs on:
 http://localhost:3000
 ```
 
-### Development Mode
+## Development Mode
 
 ```bash
 npm run dev
@@ -237,8 +243,8 @@ GET /api/auth/users
 
 This endpoint requires:
 
-* Authentication
-* `admin` role
+- Authentication
+- `admin` role
 
 ## Authorization Header
 
@@ -258,28 +264,30 @@ The API base URL is:
 http://localhost:3000/api
 ```
 
+---
+
 ## Authentication
 
-| Method | Endpoint         | Authentication |
-| ------ | ---------------- | -------------- |
-| POST   | `/auth/register` | No             |
-| POST   | `/auth/login`    | No             |
-| GET    | `/auth/profile`  | JWT            |
-| GET    | `/auth/users`    | JWT + Admin    |
+|Method | Endpoint         | Authentication |
+|------ |------------------|----------------|
+| POST  | `/auth/register` | No             |
+| POST  | `/auth/login`    | No             |
+| GET   | `/auth/profile`  | JWT            |
+| GET   | `/auth/users`    | JWT + Admin    |
 
 ---
 
-## Medicines
+# Medicines
 
 | Method | Endpoint         | Authentication |
-| ------ | ---------------- | -------------- |
+|--------|------------------|----------------|
 | POST   | `/medicines`     | JWT            |
 | GET    | `/medicines`     | JWT            |
 | GET    | `/medicines/:id` | JWT            |
 | PUT    | `/medicines/:id` | JWT            |
 | DELETE | `/medicines/:id` | JWT            |
 
-### Create Medicine
+## Create Medicine
 
 ```http
 POST /api/medicines
@@ -299,12 +307,12 @@ image
 
 The image is optional.
 
-### Medicine Search
+## Medicine Search
 
 Medicines can be searched by:
 
-* Medicine name
-* Active ingredient
+- Medicine name
+- Active ingredient
 
 Example:
 
@@ -312,12 +320,12 @@ Example:
 GET /api/medicines?search=Panadol
 ```
 
-### Medicine Filtering
+## Medicine Filtering
 
 Medicines can be filtered by:
 
-* Type
-* Status
+- Type
+- Status
 
 Example:
 
@@ -325,7 +333,7 @@ Example:
 GET /api/medicines?type=tablet&status=active
 ```
 
-### Pagination
+## Pagination
 
 Medicine retrieval supports pagination using:
 
@@ -340,32 +348,60 @@ Example:
 GET /api/medicines?page=1&limit=10
 ```
 
-The response includes:
+The response includes pagination information such as:
 
-* Current page
-* Total documents
-* Total pages
-* Number of returned medicines
+- Current page
+- Total documents
+- Total pages
+- Number of returned medicines
+
+## Update Medicine
+
+```http
+PUT /api/medicines/:id
+```
+
+Medicine updates support:
+
+- Name
+- Dosage
+- Type
+- Status
+- Description
+- Active ingredient
+- Optional image upload
+
+The update request uses:
+
+```text
+multipart/form-data
+```
 
 ---
 
-## Reminders
+# Reminders
 
 | Method | Endpoint         | Authentication |
-| ------ | ---------------- | -------------- |
+|--------|------------------|----------------|
 | POST   | `/reminders`     | JWT            |
 | GET    | `/reminders`     | JWT            |
 | PATCH  | `/reminders/:id` | JWT            |
 | DELETE | `/reminders/:id` | JWT            |
 
-Reminders contain information such as:
+## Create Reminder
 
-* Medicine
-* Time
-* Dosage quantity
-* Frequency
-* Specific days
-* Active status
+```http
+POST /api/reminders
+```
+
+A reminder contains information such as:
+
+- Medicine
+- Time
+- Frequency
+- Dosage
+- Specific days
+- Active status
 
 Supported frequencies:
 
@@ -387,31 +423,124 @@ Thursday
 Friday
 ```
 
-### Reminder Validation
+### Dosage
 
-Reminder data is validated using **Zod**.
+Reminder dosage contains:
 
-Validation includes:
+- Quantity
+- Unit
 
-* Medicine ID format
-* Reminder time
-* Dosage quantity
-* Frequency
-* Selected days
-* Active status during updates
+Supported dosage units:
 
-### Reminder Conflict Checking
+```text
+tablets
+capsules
+ml
+mg
+drops
+puffs
+```
 
-The reminder controller checks whether the same user already has a reminder for the same medicine at the same time and frequency.
+## Reminder Ownership
 
-Duplicate reminders are rejected to prevent scheduling conflicts.
+When creating a reminder, the system verifies that the selected medicine belongs to the authenticated user.
+
+A user cannot create a reminder for another user's medicine.
+
+## Reminder Conflict Checking
+
+The system checks whether the same user already has a reminder for the same medicine at the same time.
+
+Duplicate reminders are rejected.
+
+## Get User Reminders
+
+```http
+GET /api/reminders
+```
+
+Reminders can be filtered using:
+
+### Search
+
+Search by medicine name:
+
+```http
+GET /api/reminders?search=Panadol
+```
+
+### Frequency
+
+```http
+GET /api/reminders?frequency=Daily
+```
+
+### Active Status
+
+```http
+GET /api/reminders?isActive=true
+```
+
+or:
+
+```http
+GET /api/reminders?isActive=false
+```
+
+### Medicine
+
+```http
+GET /api/reminders?medicineId=<MEDICINE_ID>
+```
+
+Multiple filters can also be combined:
+
+```http
+GET /api/reminders?frequency=Daily&isActive=true&search=Panadol
+```
+
+Reminders are sorted by time.
+
+## Update Reminder
+
+```http
+PATCH /api/reminders/:id
+```
+
+The reminder can be updated using:
+
+- Time
+- Frequency
+- Days
+- Dosage
+- Active status
+
+If the frequency is changed to:
+
+```text
+Specific Days
+```
+
+days must be provided.
+
+If the frequency is changed to `Daily` or `Weekly`, the days are cleared.
+
+Only the owner of the reminder can update it.
+
+## Delete Reminder
+
+```http
+DELETE /api/reminders/:id
+```
+
+Only the owner of the reminder can delete it.
 
 ---
 
-## Medication History
+# Medication History
 
 | Method | Endpoint       | Authentication |
-| ------ | -------------- | -------------- |
+|--------|----------------|----------------|
 | POST   | `/history`     | JWT            |
 | GET    | `/history`     | JWT            |
 | PATCH  | `/history/:id` | JWT            |
@@ -427,22 +556,101 @@ Missed
 
 History records are associated with:
 
-* User
-* Medicine
-* Reminder
-* Dose status
-* Taken time
+- User
+- Medicine
+- Reminder
+- Dose status
+- Taken time
 
-### History Authorization
+## Create History
 
-When creating a history record, the system verifies that the selected medicine belongs to the authenticated user.
+```http
+POST /api/history
+```
 
-If a `reminderId` is provided, the system also verifies that:
+When creating a history record, the system verifies that:
 
-* The reminder belongs to the authenticated user.
-* The reminder is associated with the selected medicine.
+1. The medicine exists.
+2. The reminder exists.
+3. The reminder belongs to the selected medicine.
+4. The history record is associated with the authenticated user.
 
-Users can only access and update their own history records.
+Example request:
+
+```json
+{
+  "medicineId": "665abc123456789012345678",
+  "reminderId": "665abc123456789012345679",
+  "status": "Taken",
+  "takenAt": "2026-08-18T08:00:00.000Z"
+}
+```
+
+## Get History
+
+```http
+GET /api/history
+```
+
+The authenticated user's history can be filtered by:
+
+- Status
+- Medicine ID
+- Medicine name search
+
+### Filter by Status
+
+```http
+GET /api/history?status=Taken
+```
+
+### Filter by Medicine
+
+```http
+GET /api/history?medicineId=<MEDICINE_ID>
+```
+
+### Search by Medicine Name
+
+```http
+GET /api/history?search=Panadol
+```
+
+Multiple filters can be combined:
+
+```http
+GET /api/history?status=Taken&medicineId=<MEDICINE_ID>&search=Panadol
+```
+
+History records are sorted by creation date, with the newest records returned first.
+
+The medicine and reminder information is populated in the response.
+
+## History Authorization
+
+Users can only access their own history records.
+
+When updating a history record, the system checks both:
+
+- History ID
+- Authenticated user's ID
+
+Therefore, a user cannot update another user's history record.
+
+## Update History
+
+```http
+PATCH /api/history/:id
+```
+
+History records can be updated using the fields supported by the History model, such as:
+
+```json
+{
+  "status": "Missed",
+  "takenAt": "2026-08-18T10:00:00.000Z"
+}
+```
 
 ---
 
@@ -456,31 +664,35 @@ The database connection is implemented in:
 src/config/db.js
 ```
 
+---
+
 ## User Model
 
 Stores:
 
-* Name
-* Email
-* Password
-* Role
-* Timestamps
+- Name
+- Email
+- Password
+- Role
+- Timestamps
 
-Passwords are securely hashed using **bcrypt** before being stored.
+Passwords are securely hashed using **bcrypt**.
+
+---
 
 ## Medicine Model
 
 Stores:
 
-* User ID
-* Medicine name
-* Dosage
-* Type
-* Status
-* Image
-* Description
-* Active ingredient
-* Timestamps
+- User ID
+- Medicine name
+- Dosage
+- Type
+- Status
+- Image
+- Description
+- Active ingredient
+- Timestamps
 
 Medicine types include:
 
@@ -502,57 +714,96 @@ completed
 suspended
 ```
 
+---
+
 ## Reminder Model
 
 Stores:
 
-* User ID
-* Medicine ID
-* Time
-* Frequency
-* Days
-* Dosage quantity
-* Active status
-* Timestamps
+- User ID
+- Medicine ID
+- Time
+- Frequency
+- Days
+- Dosage quantity
+- Dosage unit
+- Active status
+- Timestamps
+
+Reminder frequencies include:
+
+```text
+Daily
+Weekly
+Specific Days
+```
+
+The Reminder model also contains indexes for efficient queries, including:
+
+```text
+userId
+userId + medicineId + time
+```
+
+---
 
 ## History Model
 
 Stores:
 
-* User ID
-* Medicine ID
-* Reminder ID
-* Dose status
-* Taken time
-* Timestamps
+- User ID
+- Medicine ID
+- Reminder ID
+- Dose status
+- Taken time
+- Timestamps
+
+Possible dose statuses:
+
+```text
+Taken
+Missed
+```
 
 ---
 
 # Validation
 
-The project uses multiple validation approaches depending on the module.
+The project uses different validation approaches depending on the module.
 
-### User Validation
+## User Validation
 
 User registration and login requests are validated using **Express Validator**.
 
-### Medicine Validation
+## Medicine Validation
 
-Medicine creation validates:
+Medicine creation and updates validate fields such as:
 
-* Name
-* Dosage
-* Type
-* Description
-* Active ingredient
+- Name
+- Dosage
+- Type
+- Description
+- Active ingredient
+- Status
 
-### Reminder Validation
+Validation is applied before requests reach the medicine controllers.
 
-Reminder creation and updates are validated using **Zod**.
+## Reminder Validation
 
-### History Validation
+Reminder requests are validated according to the reminder validation rules.
 
-History creation and updates use **Express Validator**.
+Validation includes fields such as:
+
+- Medicine ID
+- Time
+- Dosage
+- Frequency
+- Selected days
+- Active status
+
+## History Validation
+
+History requests use the project's history validation rules.
 
 Validation errors are handled before requests reach the controllers.
 
@@ -568,7 +819,7 @@ Upload middleware:
 src/middlewares/uploadMiddleware.js
 ```
 
-Medicine creation accepts files using:
+Medicine creation and update accept files using:
 
 ```text
 multipart/form-data
@@ -624,7 +875,10 @@ It records incoming HTTP requests to help with monitoring and debugging.
 
 # Swagger API Documentation
 
-The project uses **Swagger JSDoc** and **Swagger UI Express** for API documentation.
+The project uses:
+
+- **Swagger JSDoc**
+- **Swagger UI Express**
 
 Swagger documentation is available at:
 
@@ -640,10 +894,10 @@ http://localhost:3000/api
 
 Swagger documentation covers:
 
-* Authentication
-* Medicines
-* Reminders
-* History
+- Authentication
+- Medicines
+- Reminders
+- History
 
 Protected endpoints can be tested directly through Swagger using the **Authorize** button.
 
@@ -663,13 +917,13 @@ The API can also be tested using Postman.
 
 Recommended testing flow:
 
-### 1. Register a User
+## 1. Register a User
 
 ```http
 POST /api/auth/register
 ```
 
-### 2. Login
+## 2. Login
 
 ```http
 POST /api/auth/login
@@ -677,7 +931,7 @@ POST /api/auth/login
 
 Copy the JWT token returned from the login response.
 
-### 3. Authenticate Protected Requests
+## 3. Authenticate Protected Requests
 
 Add:
 
@@ -685,7 +939,7 @@ Add:
 Authorization: Bearer <JWT_TOKEN>
 ```
 
-### 4. Test Medicines
+## 4. Test Medicines
 
 ```text
 POST   /api/medicines
@@ -695,7 +949,7 @@ PUT    /api/medicines/:id
 DELETE /api/medicines/:id
 ```
 
-### 5. Test Reminders
+## 5. Test Reminders
 
 ```text
 POST   /api/reminders
@@ -704,7 +958,7 @@ PATCH  /api/reminders/:id
 DELETE /api/reminders/:id
 ```
 
-### 6. Test History
+## 6. Test History
 
 ```text
 POST   /api/history
@@ -751,7 +1005,23 @@ The project contains a seed script:
 src/seed/seed.js
 ```
 
-The seed script can be used to insert sample data into the database.
+The seed script creates sample data for:
+
+- User
+- Medicine
+- Reminder
+- History
+
+The generated sample data has the following relationship:
+
+```text
+User
+ └── Medicine
+      └── Reminder
+           └── History
+```
+
+The seed script also clears the previous data before inserting the sample data.
 
 Run:
 
@@ -767,8 +1037,8 @@ Make sure the `.env` file is configured and MongoDB is available before running 
 
 The project includes Docker support using:
 
-* Dockerfile
-* Docker Compose
+- Dockerfile
+- Docker Compose
 
 ## Build and Start
 
@@ -778,8 +1048,8 @@ docker compose up --build
 
 Docker Compose starts:
 
-* MediCare application
-* MongoDB
+- MediCare application
+- MongoDB
 
 The application is exposed on:
 
@@ -809,14 +1079,14 @@ mongo_data
 
 # Project Team
 
-| Team Member       | Responsibility                           |
-| ----------------- | ---------------------------------------- |
-| **Marwan Mohie**  | User and Authentication                  |
-| **Youssef Sayed** | Medicines and File Upload                |
-| **Omar Saeed**    | Search, Filter and Pagination            |
-| **Sara Mohsen**   | Reminders Module                         |
-| **Nada Mostafa**  | History and Logging                      |
-| **Hoda Hatem**    | Configuration, Documentation and Testing |
+| Team Member      | Responsibility                           |
+|------------------|------------------------------------------|
+| **Marwan Mohie** | User and Authentication                  |
+| **Youssef Sayed**| Medicines and File Upload                |
+| **Omar Saeed**   | Search, Filter and Pagination            |
+| **Sara Mohsen**  | Reminders Module                         |
+| **Nada Mostafa** | History and Logging                      |
+| **Hoda Hatem**   | Configuration, Documentation and Testing |
 
 ---
 
@@ -824,14 +1094,14 @@ mongo_data
 
 The configuration and documentation work includes:
 
-* MongoDB connection
-* Global error handling
-* Swagger API documentation
-* Postman API testing
-* Docker configuration
-* Project README
-* Environment variable configuration
-* Automated testing setup
+- MongoDB connection
+- Global error handling
+- Swagger API documentation
+- Postman API testing
+- Docker configuration
+- Project README
+- Environment variable configuration
+- Automated testing setup
 
 ---
 
