@@ -54,24 +54,56 @@ const createHistory = async (req, res, next) => {
   }
 };
 
+
 const getHistory = async (req, res, next) => {
   try {
-    const history = await History.find({ userId: req.user._id })
+    const { status, medicineId, search } = req.query;
+
+    // Base filter: get history for logged-in user only
+    const filter = {
+      userId: req.user._id,
+    };
+
+    // Filter by status
+    if (status) {
+      filter.status = status;
+    }
+
+    // Filter by medicine ID
+    if (medicineId) {
+      filter.medicineId = medicineId;
+    }
+
+    // Get history records
+    const history = await History.find(filter)
       .populate("medicineId")
       .populate("reminderId")
       .sort({ createdAt: -1 });
+
+    // Search by medicine name
+    let filteredHistory = history;
+
+    if (search) {
+      filteredHistory = history.filter((item) =>
+        item.medicineId?.name
+          ?.toLowerCase()
+          .includes(search.toLowerCase())
+      );
+    }
 
     return responseHandler(
       res,
       200,
       "History retrieved successfully.",
-      { history }
+      {
+        history: filteredHistory,
+      }
     );
-  } 
-  catch (err) {
+  } catch (err) {
     next(err);
   }
 };
+
 
 const updateHistory = async (req, res, next) => {
   try {
@@ -99,11 +131,11 @@ const updateHistory = async (req, res, next) => {
       "History updated successfully.",
       { history }
     );
-  } 
-  catch (err) {
+  } catch (err) {
     next(err);
   }
 };
+
 
 module.exports = {
   createHistory,
