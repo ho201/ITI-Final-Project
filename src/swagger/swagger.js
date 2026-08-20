@@ -9,14 +9,14 @@ const options = {
       title: "MediCare Reminder API",
       version: "1.0.0",
       description:
-        "RESTful API for managing users, medicines, reminders, and medication history."
+        "RESTful API for managing users, medicines, reminders, and medication history.",
     },
 
     servers: [
       {
         url: "http://localhost:3000/api",
-        description: "Local development server"
-      }
+        description: "Local development server",
+      },
     ],
 
     components: {
@@ -24,16 +24,15 @@ const options = {
         bearerAuth: {
           type: "http",
           scheme: "bearer",
-          bearerFormat: "JWT"
-        }
-      }
-    }
+          bearerFormat: "JWT",
+        },
+      },
+    },
   },
 
-  apis: [path.join(__dirname, "swaggerDocs.js")]
+  apis: [path.join(__dirname, "swaggerDocs.js")],
 };
 
 const swaggerSpec = swaggerJsdoc(options);
 
 module.exports = swaggerSpec;
-

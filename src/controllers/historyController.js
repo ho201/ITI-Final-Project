@@ -25,7 +25,7 @@ const createHistory = async (req, res, next) => {
       throw error;
     }
 
-   
+  
     if (reminder.medicineId.toString() !== medicineId.toString()) {
       const error = new Error(
         "Reminder does not belong to this medicine."

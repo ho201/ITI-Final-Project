@@ -11,6 +11,10 @@
  *     description: Medication dose history APIs
  */
 
+/* =========================================================
+   AUTHENTICATION
+   ========================================================= */
+
 /**
  * @swagger
  * /auth/register:
@@ -116,6 +120,10 @@
  *         description: Admin access required
  */
 
+/* =========================================================
+   MEDICINES
+   ========================================================= */
+
 /**
  * @swagger
  * /medicines:
@@ -141,7 +149,7 @@
  *                 example: Panadol
  *               dosage:
  *                 type: string
- *                 example: 500mg
+ *                 example: 500 mg
  *               type:
  *                 type: string
  *                 enum:
@@ -153,6 +161,13 @@
  *                   - injection
  *                   - other
  *                 example: tablet
+ *               status:
+ *                 type: string
+ *                 enum:
+ *                   - active
+ *                   - completed
+ *                   - suspended
+ *                 example: active
  *               description:
  *                 type: string
  *                 example: Pain relief medicine
@@ -185,17 +200,19 @@
  *         required: false
  *         schema:
  *           type: integer
- *           default: 1
  *           minimum: 1
+ *           default: 1
  *         example: 1
+ *
  *       - in: query
  *         name: limit
  *         required: false
  *         schema:
  *           type: integer
- *           default: 10
  *           minimum: 1
+ *           default: 10
  *         example: 10
+ *
  *       - in: query
  *         name: search
  *         required: false
@@ -203,6 +220,7 @@
  *           type: string
  *         description: Search by medicine name or active ingredient
  *         example: Panadol
+ *
  *       - in: query
  *         name: type
  *         required: false
@@ -217,6 +235,7 @@
  *             - injection
  *             - other
  *         example: tablet
+ *
  *       - in: query
  *         name: status
  *         required: false
@@ -227,6 +246,7 @@
  *             - completed
  *             - suspended
  *         example: active
+ *
  *     responses:
  *       200:
  *         description: Medicines retrieved successfully
@@ -276,7 +296,7 @@
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
@@ -285,7 +305,7 @@
  *                 example: Panadol
  *               dosage:
  *                 type: string
- *                 example: 500mg
+ *                 example: 500 mg
  *               type:
  *                 type: string
  *                 enum:
@@ -306,13 +326,18 @@
  *                 example: active
  *               description:
  *                 type: string
- *                 example: Pain relief medicine
+ *                 example: Updated pain relief medicine
  *               activeIngredient:
  *                 type: string
  *                 example: Paracetamol
+ *               image:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       200:
  *         description: Medicine updated successfully
+ *       400:
+ *         description: Validation error
  *       401:
  *         description: Unauthorized
  *       404:
@@ -343,6 +368,10 @@
  *         description: Medicine not found
  */
 
+/* =========================================================
+   REMINDERS
+   ========================================================= */
+
 /**
  * @swagger
  * /reminders:
@@ -361,44 +390,26 @@
  *               - medicineId
  *               - time
  *               - dosage
- *               - frequency
  *             properties:
  *               medicineId:
  *                 type: string
  *                 pattern: '^[0-9a-fA-F]{24}$'
  *                 example: 665abc123456789012345678
+ *
  *               time:
  *                 type: string
  *                 pattern: '^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$'
  *                 example: "08:00"
- *               dosage:
- *                 type: object
- *                 required:
- *                   - quantity
- *                   - unit
- *                 properties:
- *                   quantity:
- *                     type: number
- *                     minimum: 0.1
- *                     exclusiveMinimum: true
- *                     example: 1
- *                   unit:
- *                     type: string
- *                     enum:
- *                       - tablets
- *                       - capsules
- *                       - ml
- *                       - mg
- *                       - drops
- *                       - puffs
- *                     example: tablets
+ *
  *               frequency:
  *                 type: string
  *                 enum:
  *                   - Daily
  *                   - Weekly
  *                   - Specific Days
+ *                 default: Daily
  *                 example: Daily
+ *
  *               days:
  *                 type: array
  *                 items:
@@ -414,10 +425,33 @@
  *                 example:
  *                   - Monday
  *                   - Wednesday
+ *
+ *               dosage:
+ *                 type: object
+ *                 required:
+ *                   - quantity
+ *                   - unit
+ *                 properties:
+ *                   quantity:
+ *                     type: number
+ *                     minimum: 0.1
+ *                     example: 1
+ *                   unit:
+ *                     type: string
+ *                     enum:
+ *                       - tablets
+ *                       - capsules
+ *                       - ml
+ *                       - mg
+ *                       - drops
+ *                       - puffs
+ *                     example: tablets
+ *
  *               isActive:
  *                 type: boolean
  *                 default: true
  *                 example: true
+ *
  *     responses:
  *       201:
  *         description: Reminder created successfully
@@ -425,6 +459,8 @@
  *         description: Validation error or duplicate reminder
  *       401:
  *         description: Unauthorized
+ *       404:
+ *         description: Medicine not found or unauthorized
  */
 
 /**
@@ -435,9 +471,47 @@
  *     tags: [Reminders]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Search reminders by medicine name
+ *         example: Panadol
+ *
+ *       - in: query
+ *         name: frequency
+ *         required: false
+ *         schema:
+ *           type: string
+ *           enum:
+ *             - Daily
+ *             - Weekly
+ *             - Specific Days
+ *         description: Filter reminders by frequency
+ *         example: Daily
+ *
+ *       - in: query
+ *         name: isActive
+ *         required: false
+ *         schema:
+ *           type: boolean
+ *         description: Filter reminders by active status
+ *         example: true
+ *
+ *       - in: query
+ *         name: medicineId
+ *         required: false
+ *         schema:
+ *           type: string
+ *           pattern: '^[0-9a-fA-F]{24}$'
+ *         description: Filter reminders by medicine ID
+ *         example: 665abc123456789012345678
+ *
  *     responses:
  *       200:
- *         description: Reminders retrieved successfully
+ *         description: Reminders fetched successfully
  *       401:
  *         description: Unauthorized
  */
@@ -457,6 +531,7 @@
  *         schema:
  *           type: string
  *         example: 665abc123456789012345678
+ *
  *     requestBody:
  *       required: true
  *       content:
@@ -468,6 +543,31 @@
  *                 type: string
  *                 pattern: '^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$'
  *                 example: "09:30"
+ *
+ *               frequency:
+ *                 type: string
+ *                 enum:
+ *                   - Daily
+ *                   - Weekly
+ *                   - Specific Days
+ *                 example: Specific Days
+ *
+ *               days:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   enum:
+ *                     - Saturday
+ *                     - Sunday
+ *                     - Monday
+ *                     - Tuesday
+ *                     - Wednesday
+ *                     - Thursday
+ *                     - Friday
+ *                 example:
+ *                   - Monday
+ *                   - Friday
+ *
  *               dosage:
  *                 type: object
  *                 properties:
@@ -485,31 +585,11 @@
  *                       - drops
  *                       - puffs
  *                     example: tablets
- *               frequency:
- *                 type: string
- *                 enum:
- *                   - Daily
- *                   - Weekly
- *                   - Specific Days
- *                 example: Daily
- *               days:
- *                 type: array
- *                 items:
- *                   type: string
- *                   enum:
- *                     - Saturday
- *                     - Sunday
- *                     - Monday
- *                     - Tuesday
- *                     - Wednesday
- *                     - Thursday
- *                     - Friday
- *                 example:
- *                   - Monday
- *                   - Friday
+ *
  *               isActive:
  *                 type: boolean
  *                 example: false
+ *
  *     responses:
  *       200:
  *         description: Reminder updated successfully
@@ -549,6 +629,10 @@
  *         description: Reminder not found
  */
 
+/* =========================================================
+   HISTORY
+   ========================================================= */
+
 /**
  * @swagger
  * /history:
@@ -570,9 +654,11 @@
  *             properties:
  *               medicineId:
  *                 type: string
+ *                 pattern: '^[0-9a-fA-F]{24}$'
  *                 example: 665abc123456789012345678
  *               reminderId:
  *                 type: string
+ *                 pattern: '^[0-9a-fA-F]{24}$'
  *                 example: 665abc123456789012345679
  *               status:
  *                 type: string
@@ -588,9 +674,11 @@
  *       201:
  *         description: History created successfully
  *       400:
- *         description: Validation error
+ *         description: Reminder does not belong to this medicine or validation error
  *       401:
  *         description: Unauthorized
+ *       404:
+ *         description: Medicine or reminder not found
  */
 
 /**
@@ -601,6 +689,35 @@
  *     tags: [History]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: status
+ *         required: false
+ *         schema:
+ *           type: string
+ *           enum:
+ *             - Taken
+ *             - Missed
+ *         description: Filter history records by dose status
+ *         example: Taken
+ *
+ *       - in: query
+ *         name: medicineId
+ *         required: false
+ *         schema:
+ *           type: string
+ *           pattern: '^[0-9a-fA-F]{24}$'
+ *         description: Filter history records by medicine ID
+ *         example: 665abc123456789012345678
+ *
+ *       - in: query
+ *         name: search
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Search history records by medicine name
+ *         example: Panadol
+ *
  *     responses:
  *       200:
  *         description: History retrieved successfully
