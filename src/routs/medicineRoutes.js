@@ -28,10 +28,15 @@ router.post(
   upload.single("image"),
   medicineValidation,
   handleValidationErrors,
-  createMedicine
-);
+  createMedicine);
 
-router.put("/:id", protect, updateMedicine);
+router.put(
+  "/:id",
+   protect,
+   upload.single("image"),
+   medicineValidation,
+   handleValidationErrors,
+    updateMedicine);
 
 router.delete("/:id", protect, deleteMedicine);
 
