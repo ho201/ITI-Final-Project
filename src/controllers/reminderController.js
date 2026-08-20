@@ -7,7 +7,6 @@ const createReminder = async (req, res, next) => {
         const userId = req.user.id;
         const { medicineId, time } = req.body;
 
-        // Check if medicine exists and belongs to the user
         const medicine = await Medicine.findOne({
             _id: medicineId,
             userId
@@ -19,7 +18,6 @@ const createReminder = async (req, res, next) => {
             throw error;
         }
 
-        // Check for duplicate reminder
         const existingReminder = await Reminder.findOne({
             userId,
             medicineId,
@@ -55,21 +53,49 @@ const createReminder = async (req, res, next) => {
         next(error);
     }
 };
+
 const getUserReminders = async (req, res, next) => {
     try {
         const userId = req.user.id;
+        const { search, frequency, isActive, medicineId } = req.query;
 
-        const reminders = await Reminder.find({ userId })
-            .populate("medicineId", "name dosage image");
+        const filter = {
+            userId
+        };
+
+        if (frequency) {
+            filter.frequency = frequency;
+        }
+
+        if (isActive !== undefined) {
+            filter.isActive = isActive === "true";
+        }
+
+        if (medicineId) {
+            filter.medicineId = medicineId;
+        }
+
+        const reminders = await Reminder.find(filter)
+            .populate("medicineId", "name dosage image")
+            .sort({ time: 1 });
+
+        let filteredReminders = reminders;
+
+        if (search) {
+            filteredReminders = reminders.filter((reminder) =>
+                reminder.medicineId?.name
+                    ?.toLowerCase()
+                    .includes(search.toLowerCase())
+            );
+        }
 
         return responseHandler(
             res,
             200,
             "Reminders fetched successfully",
-            reminders
+            filteredReminders
         );
-    } 
-    catch (error) {
+    } catch (error) {
         next(error);
     }
 };
@@ -101,17 +127,18 @@ const updateReminder = async (req, res, next) => {
 
             if (updateData.frequency === "Specific Days") {
                 if (!updateData.days || updateData.days.length === 0) {
-                    const err = new Error("Days are required when frequency is Specific Days");
+                    const err = new Error(
+                        "Days are required when frequency is Specific Days"
+                    );
                     err.statusCode = 400;
                     throw err;
                 }
+
                 reminder.days = updateData.days;
-            } 
-            else {
-                reminder.days = undefined; 
+            } else {
+                reminder.days = undefined;
             }
-        } 
-        else if (updateData.days) {
+        } else if (updateData.days) {
             if (reminder.frequency === "Specific Days") {
                 reminder.days = updateData.days;
             }
@@ -120,6 +147,7 @@ const updateReminder = async (req, res, next) => {
         if (updateData.dosage) {
             if (updateData.dosage.quantity !== undefined)
                 reminder.dosage.quantity = updateData.dosage.quantity;
+
             if (updateData.dosage.unit !== undefined)
                 reminder.dosage.unit = updateData.dosage.unit;
         }
@@ -135,8 +163,7 @@ const updateReminder = async (req, res, next) => {
             "Reminder updated successfully",
             reminder
         );
-    } 
-    catch (error) {
+    } catch (error) {
         next(error);
     }
 };
@@ -167,8 +194,7 @@ const deleteReminder = async (req, res, next) => {
             200,
             "Reminder deleted successfully"
         );
-    } 
-    catch (error) {
+    } catch (error) {
         next(error);
     }
 };
