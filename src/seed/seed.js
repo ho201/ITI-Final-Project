@@ -39,15 +39,18 @@ const seedData = async () => {
         });
 
         // Create Reminder
-        const reminder = await Reminder.create({
-            userId: user._id,
-            medicineId: medicine._id,
-            time: "08:00",
-            frequency: "Daily",
-            days: [],
-            dosageQuantity: "1 tablet",
-            isActive: true
-        });
+    const reminder = await Reminder.create({
+    userId: user._id,
+    medicineId: medicine._id,
+    time: "08:00",
+    frequency: "Daily",
+    days: [],
+    dosage: {
+        quantity: 1,
+        unit: "tablets"
+    },
+    isActive: true
+});
 
         //  Create History
         await History.create({
