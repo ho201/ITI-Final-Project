@@ -1,9 +1,11 @@
-const Medicine = require("../models/Medicine");
 const responseHandler = require("../utils/responseHandler");
+const medicineService = require("../services/medicineService");
 
+// Create medicine
 const createMedicine = async (req, res, next) => {
     try {
-        const medicine = await Medicine.create({
+
+        const medicine = await medicineService.createMedicine({
             ...req.body,
             userId: req.user._id,
             image: req.file ? req.file.path : null
@@ -15,44 +17,21 @@ const createMedicine = async (req, res, next) => {
             "Medicine created successfully",
             { medicine }
         );
-    } 
-    catch (error) {
+
+    } catch (error) {
         next(error);
     }
 };
 
+// Get medicines
 const getMedicines = async (req, res, next) => {
     try {
-        const { page = 1, limit = 10, search, type, status } = req.query;
-        let dbQuery = { userId: req.user._id };
 
-        if (search) {
-            dbQuery.$or = [
-                { name: { $regex: search, $options: "i" } },
-                { activeIngredient: { $regex: search, $options: "i" } }
-            ];
-        }
-
-        if (type) dbQuery.type = type;
-        if (status) dbQuery.status = status;
-
-        const parsedLimit = parseInt(limit);
-        const skipAmount = (parseInt(page) - 1) * parsedLimit;
-
-        const medicines = await Medicine.find(dbQuery)
-            .skip(skipAmount)
-            .limit(parsedLimit)
-            .lean();
-
-        const totalDocuments = await Medicine.countDocuments(dbQuery);
-
-        const result = {
-            count: medicines.length,
-            total: totalDocuments,
-            totalPages: Math.ceil(totalDocuments / parsedLimit),
-            currentPage: parseInt(page),
-            medicines
-        };
+        const result =
+            await medicineService.getMedicines(
+                req.user._id,
+                req.query
+            );
 
         return responseHandler(
             res,
@@ -60,22 +39,21 @@ const getMedicines = async (req, res, next) => {
             "Medicines retrieved successfully",
             result
         );
-    } 
-    catch (error) {
+
+    } catch (error) {
         next(error);
     }
 };
 
+// Get medicine by ID
 const getMedicineById = async (req, res, next) => {
     try {
-        const medicine = await Medicine.findOne({
-            _id: req.params.id,
-            userId: req.user._id
-        });
 
-        if (!medicine) {
-            return responseHandler(res, 404, "Medicine not found");
-        }
+        const medicine =
+            await medicineService.getMedicineById(
+                req.params.id,
+                req.user._id
+            );
 
         return responseHandler(
             res,
@@ -83,29 +61,22 @@ const getMedicineById = async (req, res, next) => {
             "Medicine retrieved successfully",
             { medicine }
         );
-    } 
-    catch (error) {
+
+    } catch (error) {
         next(error);
     }
 };
 
+// Update medicine
 const updateMedicine = async (req, res, next) => {
     try {
-        const medicine = await Medicine.findOneAndUpdate(
-            {
-                _id: req.params.id,
-                userId: req.user._id
-            },
-            req.body,
-            {
-                new: true,
-                runValidators: true
-            }
-        );
 
-        if (!medicine) {
-            return responseHandler(res, 404, "Medicine not found");
-        }
+        const medicine =
+            await medicineService.updateMedicine(
+                req.params.id,
+                req.user._id,
+                req.body
+            );
 
         return responseHandler(
             res,
@@ -113,30 +84,28 @@ const updateMedicine = async (req, res, next) => {
             "Medicine updated successfully",
             { medicine }
         );
-    } 
-    catch (error) {
+
+    } catch (error) {
         next(error);
     }
 };
 
+// Delete medicine
 const deleteMedicine = async (req, res, next) => {
     try {
-        const medicine = await Medicine.findOneAndDelete({
-            _id: req.params.id,
-            userId: req.user._id
-        });
 
-        if (!medicine) {
-            return responseHandler(res, 404, "Medicine not found");
-        }
+        await medicineService.deleteMedicine(
+            req.params.id,
+            req.user._id
+        );
 
         return responseHandler(
             res,
             200,
             "Medicine deleted successfully"
         );
-    } 
-    catch (error) {
+
+    } catch (error) {
         next(error);
     }
 };
