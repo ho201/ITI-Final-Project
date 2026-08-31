@@ -1,138 +1,75 @@
-const History = require("../models/History");
-const Medicine = require("../models/Medicine");
-const Reminder = require("../models/Reminder");
 const responseHandler = require("../utils/responseHandler");
+const historyService = require("../services/historyService");
 
+// Create history
 const createHistory = async (req, res, next) => {
-  try {
-    const { medicineId, reminderId, status, takenAt } = req.body;
+    try {
 
-    
-    const medicine = await Medicine.findById(medicineId);
+        const history =
+            await historyService.createHistory(
+                req.user._id,
+                req.body
+            );
 
-    if (!medicine) {
-      const error = new Error("Medicine not found.");
-      error.statusCode = 404;
-      throw error;
+        return responseHandler(
+            res,
+            201,
+            "History created successfully.",
+            { history }
+        );
+
+    } catch (err) {
+        next(err);
     }
-
-    
-    const reminder = await Reminder.findById(reminderId);
-
-    if (!reminder) {
-      const error = new Error("Reminder not found.");
-      error.statusCode = 404;
-      throw error;
-    }
-
-  
-    if (reminder.medicineId.toString() !== medicineId.toString()) {
-      const error = new Error(
-        "Reminder does not belong to this medicine."
-      );
-      error.statusCode = 400;
-      throw error;
-    }
-
-    const history = await History.create({
-      userId: req.user._id,
-      medicineId,
-      reminderId,
-      status,
-      takenAt,
-    });
-
-    return responseHandler(
-      res,
-      201,
-      "History created successfully.",
-      { history }
-    );
-  } catch (err) {
-    next(err);
-  }
 };
 
-
+// Get history
 const getHistory = async (req, res, next) => {
-  try {
-    const { status, medicineId, search } = req.query;
+    try {
 
-    const filter = {
-      userId: req.user._id,
-    };
+        const history =
+            await historyService.getHistory(
+                req.user._id,
+                req.query
+            );
 
-    if (status) {
-      filter.status = status;
+        return responseHandler(
+            res,
+            200,
+            "History retrieved successfully.",
+            { history }
+        );
+
+    } catch (err) {
+        next(err);
     }
-
-    if (medicineId) {
-      filter.medicineId = medicineId;
-    }
-
-    const history = await History.find(filter)
-      .populate("medicineId")
-      .populate("reminderId")
-      .sort({ createdAt: -1 });
-
-    let filteredHistory = history;
-
-    if (search) {
-      filteredHistory = history.filter((item) =>
-        item.medicineId?.name
-          ?.toLowerCase()
-          .includes(search.toLowerCase())
-      );
-    }
-
-    return responseHandler(
-      res,
-      200,
-      "History retrieved successfully.",
-      {
-        history: filteredHistory,
-      }
-    );
-  } catch (err) {
-    next(err);
-  }
 };
 
-
+// Update history
 const updateHistory = async (req, res, next) => {
-  try {
-    const history = await History.findOneAndUpdate(
-      {
-        _id: req.params.id,
-        userId: req.user._id,
-      },
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    try {
 
-    if (!history) {
-      const error = new Error("History record not found.");
-      error.statusCode = 404;
-      throw error;
+        const history =
+            await historyService.updateHistory(
+                req.params.id,
+                req.user._id,
+                req.body
+            );
+
+        return responseHandler(
+            res,
+            200,
+            "History updated successfully.",
+            { history }
+        );
+
+    } catch (err) {
+        next(err);
     }
-
-    return responseHandler(
-      res,
-      200,
-      "History updated successfully.",
-      { history }
-    );
-  } catch (err) {
-    next(err);
-  }
 };
-
 
 module.exports = {
-  createHistory,
-  getHistory,
-  updateHistory,
+    createHistory,
+    getHistory,
+    updateHistory
 };
