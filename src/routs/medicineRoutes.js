@@ -2,7 +2,6 @@ const express = require("express");
 
 const {
   protect,
-  handleValidationErrors,
   upload
 } = require("../middlewares");
 
@@ -16,6 +15,8 @@ const {
   deleteMedicine
 } = require("../controllers/mediController");
 
+const validateSchema = require("../middlewares/validateSchema");
+
 const router = express.Router();
 
 router.get("/", protect, getMedicines);
@@ -26,17 +27,17 @@ router.post(
   "/",
   protect,
   upload.single("image"),
-  medicineValidation,
-  handleValidationErrors,
-  createMedicine);
+  validateSchema(medicineValidation),
+  createMedicine
+);
 
 router.put(
   "/:id",
   protect,
   upload.single("image"),
-  medicineValidation,
-  handleValidationErrors,
-  updateMedicine);
+  validateSchema(medicineValidation),
+  updateMedicine
+);
 
 router.delete("/:id", protect, deleteMedicine);
 

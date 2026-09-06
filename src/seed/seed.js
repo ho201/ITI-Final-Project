@@ -1,7 +1,5 @@
 require("dotenv").config();
 
-const mongoose = require("mongoose");
-
 const User = require("../models/User");
 const Medicine = require("../models/Medicine");
 const Reminder = require("../models/Reminder");
@@ -9,8 +7,18 @@ const History = require("../models/History");
 
 const connectDB = require("../config/db");
 
+
 const seedData = async () => {
+
+    // Prevent seed from running in production
+    if (process.env.NODE_ENV === "production") {
+        throw new Error(
+            "❌ Seed is disabled in production environment."
+        );
+    }
+
     try {
+
         await connectDB();
 
         // Clear old seed data
@@ -19,6 +27,7 @@ const seedData = async () => {
         await Medicine.deleteMany({});
         await User.deleteMany({});
 
+
         // Create User
         const user = await User.create({
             name: "Test User",
@@ -26,6 +35,7 @@ const seedData = async () => {
             password: "123456",
             role: "user"
         });
+
 
         // Create Medicine
         const medicine = await Medicine.create({
@@ -38,21 +48,23 @@ const seedData = async () => {
             activeIngredient: "Paracetamol"
         });
 
-        // Create Reminder
-    const reminder = await Reminder.create({
-    userId: user._id,
-    medicineId: medicine._id,
-    time: "08:00",
-    frequency: "Daily",
-    days: [],
-    dosage: {
-        quantity: 1,
-        unit: "tablets"
-    },
-    isActive: true
-});
 
-        //  Create History
+        // Create Reminder
+        const reminder = await Reminder.create({
+            userId: user._id,
+            medicineId: medicine._id,
+            time: "08:00",
+            frequency: "Daily",
+            days: [],
+            dosage: {
+                quantity: 1,
+                unit: "tablets"
+            },
+            isActive: true
+        });
+
+
+        // Create History
         await History.create({
             userId: user._id,
             medicineId: medicine._id,
@@ -61,14 +73,19 @@ const seedData = async () => {
             takenAt: new Date()
         });
 
+
         console.log("✅ Seed data inserted successfully");
 
-        process.exit(0);
-
     } catch (error) {
-        console.error("Seed failed:", error);
-        process.exit(1);
+
+        console.error("❌ Seed failed:", error);
+
     }
 };
 
-seedData();
+
+// IMPORTANT:
+// Do NOT call seedData() here.
+// The seed must be run manually.
+
+module.exports = seedData;

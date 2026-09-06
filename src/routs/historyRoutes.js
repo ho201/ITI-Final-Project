@@ -1,9 +1,9 @@
 const express = require("express");
+
 const router = express.Router();
 
 const {
   protect,
-  handleValidationErrors,
 } = require("../middlewares");
 
 const {
@@ -17,15 +17,14 @@ const {
   updateHistoryValidation,
 } = require("../validations/history.validation");
 
+const validateSchema = require("../middlewares/validateSchema");
 
 router.post(
   "/",
   protect,
-  createHistoryValidation,
-  handleValidationErrors,
+  validateSchema(createHistoryValidation),
   createHistory
 );
-
 
 router.get(
   "/",
@@ -33,14 +32,11 @@ router.get(
   getHistory
 );
 
-
 router.patch(
   "/:id",
   protect,
-  updateHistoryValidation,
-  handleValidationErrors,
+  validateSchema(updateHistoryValidation),
   updateHistory
 );
-
 
 module.exports = router;

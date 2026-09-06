@@ -12,8 +12,9 @@ const {
 const {
   protect,
   authorizeRoles,
-  handleValidationErrors,
 } = require("../middlewares");
+
+const validateSchema = require("../middlewares/validateSchema");
 
 const {
   validateRegister,
@@ -23,16 +24,14 @@ const {
 
 router.post(
   "/register",
-  validateRegister,
-  handleValidationErrors,
+  validateSchema(validateRegister),
   register
 );
 
 
 router.post(
   "/login",
-  validateLogin,
-  handleValidationErrors,
+  validateSchema(validateLogin),
   login
 );
 
@@ -50,5 +49,6 @@ router.get(
   protect,
   profile
 );
+
 
 module.exports = router;
