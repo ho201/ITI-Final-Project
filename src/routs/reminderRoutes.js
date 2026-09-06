@@ -1,11 +1,15 @@
 const express = require("express");
+
 const router = express.Router();
 
+const { protect } = require("../middlewares");
+
+const validateSchema = require("../middlewares/validateSchema");
+
 const {
-  protect,
-  validateCreate,
-  validateUpdate,
-} = require("../middlewares/index");
+  createReminderSchema,
+  updateReminderSchema,
+} = require("../validations/reminderValidation");
 
 const {
   createReminder,
@@ -14,14 +18,12 @@ const {
   deleteReminder,
 } = require("../controllers/reminderController");
 
-
 router.post(
   "/",
   protect,
-  validateCreate,
+  validateSchema(createReminderSchema),
   createReminder
 );
-
 
 router.get(
   "/",
@@ -29,20 +31,17 @@ router.get(
   getUserReminders
 );
 
-
 router.patch(
   "/:id",
   protect,
-  validateUpdate,
+  validateSchema(updateReminderSchema),
   updateReminder
 );
-
 
 router.delete(
   "/:id",
   protect,
   deleteReminder
 );
-
 
 module.exports = router;

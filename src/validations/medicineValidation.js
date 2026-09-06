@@ -1,18 +1,18 @@
-const { body } = require("express-validator");
+const { z } = require("zod");
 
-const medicineValidation = [
-  body("name")
+const medicineValidation = z.object({
+  name: z
+    .string()
     .trim()
-    .notEmpty()
-    .withMessage("Medicine name is required."),
+    .min(1, "Medicine name is required."),
 
-  body("dosage")
+  dosage: z
+    .string()
     .trim()
-    .notEmpty()
-    .withMessage("Dosage is required."),
+    .min(1, "Dosage is required."),
 
-  body("type")
-    .isIn([
+  type: z
+    .enum([
       "capsule",
       "tablet",
       "cream",
@@ -20,17 +20,19 @@ const medicineValidation = [
       "syrup",
       "injection",
       "other"
-    ])
-    .withMessage("Invalid medicine type."),
+    ], {
+      message: "Invalid medicine type."
+    }),
 
-  body("description")
-    .optional()
-    .trim(),
-
-  body("activeIngredient")
+  description: z
+    .string()
     .trim()
-    .notEmpty()
-    .withMessage("Active ingredient is required"),
-];
+    .optional(),
+
+  activeIngredient: z
+    .string()
+    .trim()
+    .min(1, "Active ingredient is required"),
+});
 
 module.exports = medicineValidation;

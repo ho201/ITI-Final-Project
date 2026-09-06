@@ -1,41 +1,42 @@
-const { body } = require("express-validator");
+const { z } = require("zod");
 
-const createHistoryValidation = [
-  body("medicineId")
-    .notEmpty()
-    .withMessage("Medicine ID is required")
-    .isMongoId()
-    .withMessage("Invalid Medicine ID"),
+const objectId = z
+  .string()
+  .regex(/^[0-9a-fA-F]{24}$/, "Invalid ID");
 
-  body("reminderId")
-    .notEmpty()
-    .withMessage("Reminder ID is required")
-    .isMongoId()
-    .withMessage("Invalid Reminder ID"),
 
-  body("status")
-    .notEmpty()
-    .withMessage("Status is required")
-    .isIn(["Taken", "Missed"])
-    .withMessage("Status must be either Taken or Missed"),
+// Create History
+const createHistoryValidation = z.object({
 
-  body("takenAt")
-    .optional()
-    .isISO8601()
-    .withMessage("Invalid date format"),
-];
+  medicineId: objectId,
 
-const updateHistoryValidation = [
-  body("status")
-    .optional()
-    .isIn(["Taken", "Missed"])
-    .withMessage("Status must be either Taken or Missed"),
+  reminderId: objectId,
 
-  body("takenAt")
-    .optional()
-    .isISO8601()
-    .withMessage("Invalid date format"),
-];
+  status: z
+    .enum(["Taken", "Missed"]),
+
+  takenAt: z
+    .string()
+    .datetime()
+    .optional(),
+
+});
+
+
+// Update History
+const updateHistoryValidation = z.object({
+
+  status: z
+    .enum(["Taken", "Missed"])
+    .optional(),
+
+  takenAt: z
+    .string()
+    .datetime()
+    .optional(),
+
+});
+
 
 module.exports = {
   createHistoryValidation,

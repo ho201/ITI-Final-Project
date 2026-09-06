@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const {
     logger,
     notFoundMiddleware,
@@ -13,7 +14,7 @@ const historyRoutes = require("./routs/historyRoutes");
 const medicineRoutes = require("./routs/medicineRoutes");
 
 const app = express();
-
+app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(express.json());
 
 app.use(logger);

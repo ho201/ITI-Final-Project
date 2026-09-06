@@ -20,7 +20,6 @@ const registerUser = async ({ name, email, password }) => {
         password
     });
 
-    // Return only the data needed by the controller
     return {
         id: user._id,
         name: user.name,
@@ -29,10 +28,10 @@ const registerUser = async ({ name, email, password }) => {
     };
 };
 
+
 // Login user
 const loginUser = async ({ email, password }) => {
 
-    // Find user and include password
     const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
@@ -41,7 +40,6 @@ const loginUser = async ({ email, password }) => {
         throw error;
     }
 
-    // Compare entered password with hashed password
     const isMatch = await user.comparePassword(password);
 
     if (!isMatch) {
@@ -50,7 +48,6 @@ const loginUser = async ({ email, password }) => {
         throw error;
     }
 
-    // Generate JWT token
     const token = generateToken({
         id: user._id,
         role: user.role
@@ -67,6 +64,7 @@ const loginUser = async ({ email, password }) => {
     };
 };
 
+
 // Get current user profile
 const getProfile = (user) => {
 
@@ -79,6 +77,7 @@ const getProfile = (user) => {
     };
 };
 
+
 // Get all users
 const getAllUsers = async () => {
 
@@ -86,6 +85,7 @@ const getAllUsers = async () => {
 
     return users;
 };
+
 
 module.exports = {
     registerUser,
